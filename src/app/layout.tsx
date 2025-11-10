@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Rechnerei",
+  title: "RECHNEREI",
   description: "Erstelle Rechnungen, verwalte Kunden & Aufträge – rechtssicher, schnell und ganz ohne komplizierte Buchhaltung.",
 };
 
