@@ -2,21 +2,15 @@
 
 import * as React from "react"
 import {
-  IconCamera,
   IconChartBar,
   IconDashboard,
-  IconDatabase,
-  IconFileAi,
-  IconFileDescription,
-  IconFileWord,
   IconFolder,
   IconHelp,
   IconInnerShadowTop,
   IconListDetails,
-  IconReport,
-  IconSearch,
   IconSettings,
   IconUsers,
+  IconSend,
 } from "@tabler/icons-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -75,6 +69,11 @@ const data = {
       title: "Get Help",
       url: "#",
       icon: IconHelp,
+    },
+    {
+      title: "Feedback",
+      url: "https://insigh.to/b/rechnerei",
+      icon: IconSend,
     },
   ],
 }

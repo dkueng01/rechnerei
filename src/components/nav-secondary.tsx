@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { type Icon } from "@tabler/icons-react"
+import { IconExternalLink, type Icon } from "@tabler/icons-react"
 
 import {
   SidebarGroup,
@@ -25,16 +25,32 @@ export function NavSecondary({
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild>
-                <a href={item.url}>
-                  <item.icon />
-                  <span>{item.title}</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          {items.map((item) => {
+            const isExternal = item.url.startsWith("http")
+
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild>
+                  <a
+                    href={item.url}
+                    {...(isExternal
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    className="flex items-center gap-2"
+                  >
+                    <item.icon />
+                    <span>{item.title}</span>
+                    {isExternal && (
+                      <IconExternalLink
+                        size={16}
+                        className="ml-auto opacity-60"
+                      />
+                    )}
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            )
+          })}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
