@@ -17,6 +17,10 @@
 /.next/
 /out/
 
+# Convex
+/.convex
+/convex/_generated
+
 # production
 /build
 
