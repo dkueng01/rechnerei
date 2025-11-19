@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/sidebar"
 import { Authenticated, Unauthenticated, useConvexAuth } from "convex/react"
 import { Button } from "@/components/ui/button"
+import { LandingPage } from "@/components/landing-page"
 
 export default function Home() {
   const { isAuthenticated, isLoading } = useConvexAuth();
@@ -18,7 +19,7 @@ export default function Home() {
 
   return (
     <>
-    {/* <Authenticated> */}
+    <Authenticated>
         <SidebarProvider
           style={
             {
@@ -42,15 +43,10 @@ export default function Home() {
             </div>
           </SidebarInset>
         </SidebarProvider>
-      {/* </Authenticated>
+      </Authenticated>
       <Unauthenticated>
-        <div className="flex h-screen w-full items-center justify-center">
-          <p className="text-lg">LandingPage</p>
-          <a href="/signin">
-            <Button className="ml-4">Log in</Button>
-          </a>
-        </div>
-      </Unauthenticated> */}
+        <LandingPage />
+      </Unauthenticated>
     </>
   );
 }

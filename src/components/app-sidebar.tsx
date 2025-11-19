@@ -89,7 +89,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <a href="#">
-                <Image src={'/logo.png'} alt="Rechnerei Logo" width={32} height={32} />
+                <Image src={'/logo.png'} alt="Rechnerei Logo" width={32} height={32} className="drop-shadow-sm" />
                 <span className="text-base font-semibold">RECHNEREI</span>
               </a>
             </SidebarMenuButton>

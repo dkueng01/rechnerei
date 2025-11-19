@@ -124,3 +124,19 @@
 html {
   background-color: #fafafa;
 }
+
+.text-gradient {
+  background: linear-gradient(135deg, #2563EB 0%, #F59E0B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-glow {
+  background: radial-gradient(circle at center, rgba(245, 158, 11, 0.15) 0%, rgba(255,255,255,0) 70%);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(229, 231, 235, 0.5);
+}
