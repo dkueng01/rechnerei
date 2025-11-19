@@ -100,7 +100,7 @@ export function LandingPage() {
 
               <div className="space-y-4">
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 h-6 w-6 flex items-center justify-center rounded-full bg-green-100 text-green-600 mt-1">
+                  <div className="shrink-0 h-6 w-6 flex items-center justify-center rounded-full bg-green-100 text-green-600 mt-1">
                     <svg
                       className="w-4 h-4"
                       fill="none"
@@ -126,7 +126,7 @@ export function LandingPage() {
                 </div>
 
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 h-6 w-6 flex items-center justify-center rounded-full bg-green-100 text-green-600 mt-1">
+                  <div className="shrink-0 h-6 w-6 flex items-center justify-center rounded-full bg-green-100 text-green-600 mt-1">
                     <svg
                       className="w-4 h-4"
                       fill="none"
@@ -153,7 +153,7 @@ export function LandingPage() {
                 </div>
 
                 <div className="flex items-start">
-                  <div className="flex-shrink-0 h-6 w-6 flex items-center justify-center rounded-full bg-green-100 text-green-600 mt-1">
+                  <div className="shrink-0 h-6 w-6 flex items-center justify-center rounded-full bg-green-100 text-green-600 mt-1">
                     <svg
                       className="w-4 h-4"
                       fill="none"
@@ -181,7 +181,7 @@ export function LandingPage() {
             </div>
 
             <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-yellow-100 to-blue-100 rounded-full opacity-50 blur-3xl"></div>
+              <div className="absolute -inset-4 bg-linear-to-r from-yellow-100 to-blue-100 rounded-full opacity-50 blur-3xl"></div>
               <div className="relative bg-slate-50 rounded-2xl border border-slate-200 p-8 shadow-lg">
                 <div className="flex items-center justify-between border-b border-slate-200 pb-4 mb-4">
                   <div className="font-mono text-sm text-slate-400">
@@ -242,7 +242,82 @@ export function LandingPage() {
         </div>
     </section>
 
-    <section className="py-20">
+    <section id="pricing" className="py-24 bg-white relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-blue-50 to-yellow-50 rounded-full blur-3xl opacity-50 -z-10"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-12">
+                <h2 className="text-3xl font-bold text-slate-900">Schluss mit monatlichen Abos</h2>
+                <p className="mt-4 text-lg text-slate-600">
+                    Wir glauben an Fairness. Einmal zahlen, für immer nutzen.
+                    Teste RECHNEREI 14 Tage lang völlig risikofrei, bevor du dich entscheidest.
+                </p>
+            </div>
+
+            <div className="max-w-4xl mx-auto">
+                <div className="relative bg-white rounded-3xl shadow-2xl ring-1 ring-slate-200 overflow-hidden flex flex-col md:flex-row">
+
+                    <div className="p-8 md:p-12 flex-1 flex flex-col justify-center">
+                        <div className="inline-block px-4 py-1.5 rounded-full bg-yellow-100 text-yellow-700 font-bold text-xs uppercase tracking-wide mb-6 w-fit">
+                            Early Bird Angebot
+                        </div>
+                        <h3 className="text-2xl font-bold text-slate-900 mb-4">Lifetime Lizenz</h3>
+                        <p className="text-slate-500 mb-6">
+                            Hol dir den vollen Funktionsumfang. Inklusive aller zukünftigen Updates und Premium-Features.
+                        </p>
+
+                        <div className="flex items-baseline gap-2 mb-2">
+                            <span className="text-5xl font-bold text-slate-900">€149</span>
+                            <span className="text-lg text-slate-400 line-through">€299</span>
+                        </div>
+                        <p className="text-sm text-slate-500 mb-8">Einmalzahlung zzgl. USt.</p>
+
+                        <a href="#" className="block w-full bg-primary text-white text-center font-bold py-4 rounded-xl hover:bg-primary/90 transition shadow-lg">
+                            Jetzt 14 Tage gratis testen
+                        </a>
+                        <p className="text-xs text-center text-slate-400 mt-4">Keine Kreditkarte für den Test nötig.</p>
+                    </div>
+
+                    <div className="bg-slate-50 p-8 md:p-12 flex-1 border-t md:border-t-0 md:border-l border-slate-100">
+                        <h4 className="font-bold text-slate-900 mb-6">Alles inklusive:</h4>
+                        <ul className="space-y-4">
+                            <li className="flex items-start">
+                                <svg className="h-6 w-6 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <span className="ml-3 text-slate-600">Unbegrenzte Rechnungen & Angebote</span>
+                            </li>
+                            <li className="flex items-start">
+                                <svg className="h-6 w-6 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <span className="ml-3 text-slate-600">Kundenverwaltung (CRM)</span>
+                            </li>
+                            <li className="flex items-start">
+                                <svg className="h-6 w-6 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <span className="ml-3 text-slate-600">Zeiterfassung integriert</span>
+                            </li>
+                            <li className="flex items-start">
+                                <svg className="h-6 w-6 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <span className="ml-3 text-slate-600">Export für den Steuerberater</span>
+                            </li>
+                            <li className="flex items-start">
+                                <svg className="h-6 w-6 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <span className="ml-3 text-slate-600">Österreich-konform (RKSV ready)</span>
+                            </li>
+                             <li className="flex items-start">
+                                <svg className="h-6 w-6 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <span className="ml-3 text-slate-600">Kostenlose Updates für immer</span>
+                            </li>
+                        </ul>‚
+                    </div>
+                </div>
+
+                <div className="mt-8 text-center flex items-center justify-center gap-2 text-sm text-slate-500">
+                    <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    Sichere Zahlung via Stripe • Rechnung mit ausgewiesener USt.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section className="py-24">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="bg-slate-900 rounded-3xl overflow-hidden shadow-2xl relative">
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30">
@@ -256,7 +331,7 @@ export function LandingPage() {
                         Starte noch heute und erstelle deine erste rechtssichere Rechnung in unter 2 Minuten. Keine Kreditkarte erforderlich.
                     </p>
                     <div className="flex flex-col sm:flex-row justify-center gap-4">
-                        <button className="bg-white text-slate-900 font-bold py-4 px-8 rounded-xl hover:bg-blue-50 transition transform hover:scale-105">
+                        <button className="bg-white text-slate-900 font-bold py-4 px-8 cursor-pointer rounded-xl hover:bg-accent">
                             Jetzt kostenlos registrieren
                         </button>
                     </div>
