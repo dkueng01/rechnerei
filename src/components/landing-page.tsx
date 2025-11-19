@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Button } from "./ui/button";
+import { stackClientApp } from "@/stack/client";
 
 export function LandingPage() {
   return (
@@ -31,10 +32,10 @@ export function LandingPage() {
               </a>
             </div>
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm" className="p-2">
+              <Button variant="ghost" size="sm" className="p-2" onClick={() => stackClientApp.redirectToSignIn()}>
                 Login
               </Button>
-              <Button className="px-5 py-2.5 transition shadow-lg shadow-slate-900/20">
+              <Button className="px-5 py-2.5 transition shadow-lg shadow-slate-900/20" onClick={() => stackClientApp.redirectToSignUp()}>
                 Kostenlos testen
               </Button>
             </div>
@@ -58,17 +59,6 @@ export function LandingPage() {
               Die All-in-One Lösung für österreichische KMUs. Von Zeiterfassung
               bis zur Finanzamts-konformen Rechnung für jede Unternehmensform.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button
-                size="lg"
-                className="px-8 py-4 shadow-xl shadow-slate-900/10 hover:shadow-2xl"
-              >
-                Jetzt gratis starten
-              </Button>
-              <Button variant="outline" size="lg" className="">
-                Demo ansehen
-              </Button>
-            </div>
           </div>
 
           <div className="relative mx-auto max-w-6xl mt-12">
@@ -338,12 +328,12 @@ export function LandingPage() {
                   Einmalzahlung zzgl. USt.
                 </p>
 
-                <a
-                  href="#"
-                  className="block w-full bg-primary text-white text-center font-bold py-4 rounded-xl hover:bg-primary/90 transition shadow-lg"
+                <button
+                  className="block w-full bg-primary text-white text-center cursor-pointer font-bold py-4 rounded-xl hover:bg-primary/90 transition shadow-lg"
+                  onClick={() => stackClientApp.redirectToSignUp()}
                 >
                   Jetzt 14 Tage gratis testen
-                </a>
+                </button>
                 <p className="text-xs text-center text-slate-400 mt-4">
                   Keine Kreditkarte für den Test nötig.
                 </p>
@@ -503,7 +493,10 @@ export function LandingPage() {
                 Rechnung in unter 2 Minuten. Keine Kreditkarte erforderlich.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <button className="bg-white text-slate-900 font-bold py-4 px-8 cursor-pointer rounded-xl hover:bg-accent">
+                <button
+                  className="bg-white text-slate-900 font-bold py-4 px-8 cursor-pointer rounded-xl hover:bg-accent"
+                  onClick={() => stackClientApp.redirectToSignUp()}
+                >
                   Jetzt kostenlos registrieren
                 </button>
               </div>

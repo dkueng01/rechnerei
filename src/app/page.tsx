@@ -9,12 +9,14 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
+import { stackClientApp } from "@/stack/client"
 
 export default function Home() {
-  const loggedIn = false;
+  const user = stackClientApp.useUser();
+
   return (
     <>
-      {loggedIn ? (
+      {user ? (
         <SidebarProvider
           style={
             {
