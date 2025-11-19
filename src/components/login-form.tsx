@@ -8,8 +8,12 @@ import {
   Field,
   FieldDescription,
   FieldGroup,
+  FieldLabel,
+  FieldSeparator,
 } from "@/components/ui/field"
 import { useAuthActions } from "@convex-dev/auth/react";
+import { Input } from "./ui/input"
+import Image from "next/image"
 
 export function LoginForm({
   className,
@@ -19,7 +23,12 @@ export function LoginForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <form>
+      <form onSubmit={(event) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        console.log(formData.get("email"));
+        void signIn("resend", formData);
+      }}>
         <FieldGroup>
           <div className="flex flex-col items-center gap-2 text-center">
             <a
@@ -27,26 +36,38 @@ export function LoginForm({
               className="flex flex-col items-center gap-2 font-medium"
             >
               <div className="flex size-8 items-center justify-center rounded-md">
-                <GalleryVerticalEnd className="size-6" />
+                <Image src="/logo.png" alt="RECHNEREI" width={24} height={24} />
               </div>
               <span className="sr-only">RECHNEREI</span>
             </a>
-            <h1 className="text-xl font-bold">Welcome to Acme Inc.</h1>
-            <FieldDescription>
-              Noch kein Konto? <a href="#">Registrieren</a>
-            </FieldDescription>
+            <h1 className="text-xl font-bold">Willkommen bei RECHNEREI</h1>
           </div>
           <Field>
-            <Button variant="outline" type="button" onClick={() => void signIn("github", { redirectTo: "/" })}>
-              <Github className="size-4" />
+            <FieldLabel htmlFor="email">Email</FieldLabel>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="m@example.com"
+              required
+            />
+          </Field>
+          <Field>
+            <Button type="submit">Login</Button>
+          </Field>
+          <FieldSeparator>Or</FieldSeparator>
+          <Field className="grid gap-4 sm:grid-cols-2">
+            <Button variant="outline" type="button" onClick={() => signIn("github")}>
               Continue with Github
+            </Button>
+            <Button variant="outline" type="button" onClick={() => signIn("google")}>
+              Continue with Google
             </Button>
           </Field>
         </FieldGroup>
       </form>
       <FieldDescription className="px-6 text-center">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
+        Mit deiner Registrierung akzeptierst du unsere <a href="/agb">AGB</a> und die <a href="/datenschutz">Datenschutzerklärung</a>.
       </FieldDescription>
     </div>
   )
