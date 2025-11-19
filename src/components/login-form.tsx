@@ -1,7 +1,5 @@
 "use client"
 
-import { GalleryVerticalEnd, Github } from "lucide-react"
-
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -11,7 +9,6 @@ import {
   FieldLabel,
   FieldSeparator,
 } from "@/components/ui/field"
-import { useAuthActions } from "@convex-dev/auth/react";
 import { Input } from "./ui/input"
 import Image from "next/image"
 
@@ -19,15 +16,13 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const { signIn } = useAuthActions();
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <form onSubmit={(event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        console.log(formData.get("email"));
-        void signIn("resend", formData);
+        console.log(formData.get("email"))
       }}>
         <FieldGroup>
           <div className="flex flex-col items-center gap-2 text-center">
@@ -57,10 +52,10 @@ export function LoginForm({
           </Field>
           <FieldSeparator>Or</FieldSeparator>
           <Field className="grid gap-4 sm:grid-cols-2">
-            <Button variant="outline" type="button" onClick={() => signIn("github")}>
+            <Button variant="outline" type="button">
               Continue with Github
             </Button>
-            <Button variant="outline" type="button" onClick={() => signIn("google")}>
+            <Button variant="outline" type="button">
               Continue with Google
             </Button>
           </Field>

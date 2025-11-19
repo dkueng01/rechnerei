@@ -2,24 +2,19 @@
 
 import { AppSidebar } from "@/components/app-sidebar"
 import { ChartAreaInteractive } from "@/components/chart-area-interactive"
+import { LandingPage } from "@/components/landing-page"
 import { SectionCards } from "@/components/section-cards"
 import { SiteHeader } from "@/components/site-header"
 import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
-import { Authenticated, Unauthenticated, useConvexAuth } from "convex/react"
-import { Button } from "@/components/ui/button"
-import { LandingPage } from "@/components/landing-page"
 
 export default function Home() {
-  const { isAuthenticated, isLoading } = useConvexAuth();
-
-  console.log("isAuthenticated:", isAuthenticated, "isLoading:", isLoading);
-
+  const loggedIn = false;
   return (
     <>
-    <Authenticated>
+      {loggedIn ? (
         <SidebarProvider
           style={
             {
@@ -43,10 +38,9 @@ export default function Home() {
             </div>
           </SidebarInset>
         </SidebarProvider>
-      </Authenticated>
-      <Unauthenticated>
+      ) : (
         <LandingPage />
-      </Unauthenticated>
+      )}
     </>
   );
 }
