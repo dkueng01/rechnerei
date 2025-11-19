@@ -243,7 +243,7 @@ export function LandingPage() {
     </section>
 
     <section id="pricing" className="py-24 bg-white relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-blue-50 to-yellow-50 rounded-full blur-3xl opacity-50 -z-10"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-linear-to-r from-blue-50 to-yellow-50 rounded-full blur-3xl opacity-50 -z-10"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-3xl mx-auto mb-12">
@@ -305,7 +305,7 @@ export function LandingPage() {
                                 <svg className="h-6 w-6 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                 <span className="ml-3 text-slate-600">Kostenlose Updates für immer</span>
                             </li>
-                        </ul>‚
+                        </ul>
                     </div>
                 </div>
 
