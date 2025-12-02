@@ -2,14 +2,11 @@
 
 import * as React from "react"
 import {
-  IconChartBar,
-  IconDashboard,
-  IconFolder,
   IconHelp,
-  IconListDetails,
   IconSettings,
   IconUsers,
   IconSend,
+  IconDashboard,
 } from "@tabler/icons-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -30,44 +27,29 @@ const data = {
   user: {
     name: "David K.",
     email: "david@kuengcreative.studio",
-    avatar: "/avatars/shadcn.jpg",
+    avatar: "/logo.png",
   },
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
+      url: "/",
       icon: IconDashboard,
     },
     {
-      title: "Lifecycle",
-      url: "#",
-      icon: IconListDetails,
-    },
-    {
-      title: "Analytics",
-      url: "#",
-      icon: IconChartBar,
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
-    },
-    {
-      title: "Team",
-      url: "#",
+      title: "Customers",
+      url: "/customers",
       icon: IconUsers,
     },
   ],
   navSecondary: [
     {
       title: "Settings",
-      url: "#",
+      url: "/settings",
       icon: IconSettings,
     },
     {
       title: "Get Help",
-      url: "#",
+      url: "/help",
       icon: IconHelp,
     },
     {
@@ -88,7 +70,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              <a href="/">
                 <Image src={'/logo.png'} alt="Rechnerei Logo" width={32} height={32} className="drop-shadow-sm" />
                 <span className="text-base font-semibold">RECHNEREI</span>
               </a>
