@@ -1,7 +1,7 @@
 "use client"
 
-import { Button } from "@/components/ui/button";
-import { stackClientApp } from "@/stack/client";
+import { Button } from "@/src/components/ui/button";
+import { stackClientApp } from "@/src/stack/client";
 
 export default function Dashboard() {
   const user = stackClientApp.useUser({ or: 'redirect' })
