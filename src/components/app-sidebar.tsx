@@ -3,6 +3,8 @@
 import * as React from "react"
 import {
   BookUser,
+  ClipboardCheck,
+  Clock,
   LayoutDashboard,
   ReceiptEuro,
   Send,
@@ -34,6 +36,16 @@ const data = {
       title: "Customers",
       url: "/customers",
       icon: BookUser,
+    },
+    {
+      title: "Projects",
+      url: "/projects",
+      icon: ClipboardCheck,
+    },
+    {
+      title: "Time Tracking",
+      url: "/time-tracking",
+      icon: Clock,
     },
   ],
   navSecondary: [
