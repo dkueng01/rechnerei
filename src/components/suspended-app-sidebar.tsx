@@ -27,8 +27,7 @@ import {
 import { NavMain } from "./nav-main"
 import { NavProjects } from "./nav-projects"
 import { NavSecondary } from "./nav-secondary"
-import { NavUser } from "./nav-user"
-import { stackClientApp } from "@/stack/client"
+import { NavUserSkeleton } from "./nav-user-skeleton"
 
 const data = {
   navMain: [
@@ -149,9 +148,7 @@ const data = {
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const user = stackClientApp.useUser();
-
+export function SuspendedAppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar variant="floating" {...props}>
       <SidebarHeader>
@@ -177,7 +174,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUserSkeleton />
       </SidebarFooter>
     </Sidebar>
   )

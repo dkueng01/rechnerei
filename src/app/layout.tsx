@@ -5,6 +5,8 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+import { Suspense } from "react";
+import { SuspendedAppSidebar } from "@/components/suspended-app-sidebar";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -30,18 +32,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <SidebarProvider>
-          <StackProvider app={stackClientApp}>
-            <StackTheme>
-              <AppSidebar />
+      <StackProvider app={stackClientApp}>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <StackTheme>
+            <SidebarProvider>
+              <Suspense fallback={<SuspendedAppSidebar />}>
+                <AppSidebar />
+              </Suspense>
               <main className="w-full">
                 {children}
               </main>
-            </StackTheme>
-          </StackProvider>
-        </SidebarProvider>
-      </body>
+            </SidebarProvider>
+          </StackTheme>
+        </body>
+      </StackProvider>
     </html>
   );
 }
