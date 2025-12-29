@@ -29,18 +29,17 @@ export function CreateProjectSheet({ open, onOpenChange }: CreateProjectSheetPro
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className="w-full sm:max-w-[540px] p-0 h-full border-l sm:border-l flex flex-col"
+        className="w-[400px] sm:w-[540px] p-0 h-full flex flex-col"
       >
-        <SheetHeader className="p-4 sm:p-6 border-b shrink-0 text-left">
+        <SheetHeader className="p-4 border-b shrink-0 text-left">
           <SheetTitle>Create Project</SheetTitle>
           <SheetDescription>
             Create a new project to track time and generate invoices.
           </SheetDescription>
         </SheetHeader>
 
-        {/* Scrollable Form Content */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-          <div className="space-y-6">
+        <div className="flex-1 overflow-y-auto p-4">
+          <div className="space-y-2">
 
             <div className="space-y-1">
               <Label htmlFor="name" className="text-xs">Name</Label>
@@ -106,16 +105,6 @@ export function CreateProjectSheet({ open, onOpenChange }: CreateProjectSheetPro
               </div>
             </div>
 
-            <div className="border p-3 flex flex-row items-center justify-between shadow-sm">
-              <div className="space-y-0.5">
-                <Label className="text-xs">Billable</Label>
-                <div className="text-[10px] text-muted-foreground">
-                  Should time tracked on this project be billed?
-                </div>
-              </div>
-              <Switch />
-            </div>
-
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
                 <Label htmlFor="rate" className="text-xs">Hourly Rate</Label>
@@ -138,7 +127,7 @@ export function CreateProjectSheet({ open, onOpenChange }: CreateProjectSheetPro
           </div>
         </div>
 
-        <SheetFooter className="p-4 sm:p-6 border-t shrink-0 flex flex-row gap-2 justify-end">
+        <SheetFooter className="p-4 border-t shrink-0 flex flex-row gap-2 justify-end">
           <Button
             variant="ghost"
             onClick={() => onOpenChange(false)}

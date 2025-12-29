@@ -25,6 +25,7 @@ import { CalendarIcon, Clock, Briefcase } from "lucide-react";
 import { format } from "date-fns";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { Switch } from "./ui/switch";
 
 interface LogTimeSheetProps {
   open: boolean;
@@ -38,9 +39,9 @@ export function LogTimeSheet({ open, onOpenChange }: LogTimeSheetProps) {
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className="w-full sm:max-w-[400px] p-0 h-full border-l sm:border-l flex flex-col"
+        className="w-[400px] sm:w-[540px] p-0 h-full flex flex-col"
       >
-        <SheetHeader className="p-4 sm:p-6 border-b shrink-0 text-left">
+        <SheetHeader className="p-4 border-b shrink-0 text-left">
           <SheetTitle className="flex items-center gap-2">
             <Clock className="h-5 w-5" />
             Log Time
@@ -50,8 +51,8 @@ export function LogTimeSheet({ open, onOpenChange }: LogTimeSheetProps) {
           </SheetDescription>
         </SheetHeader>
 
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-          <div className="space-y-6">
+        <div className="flex-1 overflow-y-auto p-4">
+          <div className="space-y-2">
 
             <div className="space-y-1">
               <Label className="text-xs">Project</Label>
@@ -103,7 +104,6 @@ export function LogTimeSheet({ open, onOpenChange }: LogTimeSheetProps) {
                     mode="single"
                     selected={date}
                     onSelect={setDate}
-                    initialFocus
                   />
                 </PopoverContent>
               </Popover>
@@ -140,7 +140,7 @@ export function LogTimeSheet({ open, onOpenChange }: LogTimeSheetProps) {
               />
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 justify-between w-full">
               <div className="grid gap-1.5 leading-none">
                 <label
                   htmlFor="billable"
@@ -152,13 +152,13 @@ export function LogTimeSheet({ open, onOpenChange }: LogTimeSheetProps) {
                   Include this in the invoice.
                 </p>
               </div>
-              <Input id="billable" type="checkbox" className="h-4 w-4 ml-auto" defaultChecked />
+              <Switch />
             </div>
 
           </div>
         </div>
 
-        <SheetFooter className="p-4 sm:p-6 border-t shrink-0 flex flex-row gap-2 justify-end">
+        <SheetFooter className="p-4 border-t shrink-0 flex flex-row gap-2 justify-end">
           <Button
             variant="ghost"
             onClick={() => onOpenChange(false)}

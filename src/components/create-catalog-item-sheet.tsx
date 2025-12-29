@@ -28,35 +28,34 @@ export function CreateCatalogItemSheet({ open, onOpenChange }: CreateCatalogItem
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className="w-full sm:max-w-[540px] p-0 h-full border-l sm:border-l flex flex-col"
+        className="w-[400px] sm:w-[540px] p-0 h-full flex flex-col"
       >
-        <SheetHeader className="p-4 sm:p-6 border-b shrink-0 text-left">
+        <SheetHeader className="p-4 border-b shrink-0 text-left">
           <SheetTitle>Add Catalog Item</SheetTitle>
           <SheetDescription>
             Define services or products you offer to your customers.
           </SheetDescription>
         </SheetHeader>
 
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-          <div className="space-y-6">
+        <div className="flex-1 overflow-y-auto p-4">
+          <div className="space-y-2">
 
-            {/* Item Type Selection */}
-            <div className="space-y-3">
+            <div className="space-y-1">
               <Label className="text-xs">Item Type</Label>
               <RadioGroup defaultValue="service" className="flex gap-4">
-                <div className="flex items-center space-x-2 border p-3 flex-1 cursor-pointer hover:bg-muted/10 transition-colors">
+                <div className="flex items-center space-x-2 border p-3 flex-1 hover:bg-muted/10 transition-colors">
                   <RadioGroupItem value="service" id="service" />
                   <div className="grid gap-1.5 leading-none">
-                    <Label htmlFor="service" className="cursor-pointer">Service</Label>
+                    <Label htmlFor="service">Service</Label>
                     <p className="text-[10px] text-muted-foreground">
                       Time-based (e.g. Shooting, Editing)
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2 border p-3 flex-1 cursor-pointer hover:bg-muted/10 transition-colors">
+                <div className="flex items-center space-x-2 border p-3 flex-1 hover:bg-muted/10 transition-colors">
                   <RadioGroupItem value="product" id="product" />
                   <div className="grid gap-1.5 leading-none">
-                    <Label htmlFor="product" className="cursor-pointer">Product</Label>
+                    <Label htmlFor="product">Product</Label>
                     <p className="text-[10px] text-muted-foreground">
                       Fixed price (e.g. Prints, Frames)
                     </p>
@@ -112,7 +111,7 @@ export function CreateCatalogItemSheet({ open, onOpenChange }: CreateCatalogItem
           </div>
         </div>
 
-        <SheetFooter className="p-4 sm:p-6 border-t shrink-0 flex flex-row gap-2 justify-end">
+        <SheetFooter className="p-4 border-t shrink-0 flex flex-row gap-2 justify-end">
           <Button
             variant="ghost"
             onClick={() => onOpenChange(false)}
