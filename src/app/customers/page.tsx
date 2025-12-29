@@ -23,6 +23,7 @@ import {
 import { useState } from "react";
 import { CreateCustomerSheet } from "@/components/create-customer-sheet";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { stackClientApp } from "@/stack/client";
 
 const customers = [
   {
@@ -37,6 +38,7 @@ const customers = [
 ];
 
 export default function CustomersPage() {
+  const user = stackClientApp.useUser({ or: 'redirect' })
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   return (

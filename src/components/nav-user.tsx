@@ -4,15 +4,13 @@ import {
   BadgeCheck,
   Bell,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
-  Sparkles,
+  Settings,
 } from "lucide-react"
 
 import {
   Avatar,
   AvatarFallback,
-  AvatarImage,
 } from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -30,6 +28,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { CurrentUser } from "@stackframe/stack"
+import { stackClientApp } from "@/stack/client"
 
 export function NavUser({ user }: { user: CurrentUser | null }) {
   const { isMobile } = useSidebar()
@@ -71,29 +70,7 @@ export function NavUser({ user }: { user: CurrentUser | null }) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => stackClientApp.signOut()}>
               <LogOut />
               Log out
             </DropdownMenuItem>
