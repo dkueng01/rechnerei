@@ -1,6 +1,9 @@
-export default function Loading() {
+import { Loader2 } from "lucide-react";
 
-  // Stack uses React Suspense, which will render this page while user data is being fetched.
-  // See: https://nextjs.org/docs/app/api-reference/file-conventions/loading
-  return <></>;
+export default function Loading() {
+  return (
+    <div className="flex h-full w-full flex-1 items-center justify-center min-h-[50vh]">
+      <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+    </div>
+  );
 }
