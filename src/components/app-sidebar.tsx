@@ -53,6 +53,11 @@ const data = {
       url: "/time-tracking",
       icon: Clock,
     },
+    {
+      title: "Invoices",
+      url: "/invoices",
+      icon: ReceiptEuro,
+    },
   ],
   navSecondary: [
     {
