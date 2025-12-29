@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon, Clock } from "lucide-react";
+import { CalendarIcon, Clock, Briefcase } from "lucide-react";
 import { format } from "date-fns";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -46,15 +46,13 @@ export function LogTimeSheet({ open, onOpenChange }: LogTimeSheetProps) {
             Log Time
           </SheetTitle>
           <SheetDescription>
-            Record work hours for a specific project.
+            Record work hours and services for a project.
           </SheetDescription>
         </SheetHeader>
 
-        {/* Scrollable Form Content */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6">
           <div className="space-y-6">
 
-            {/* Project Selection */}
             <div className="space-y-1">
               <Label className="text-xs">Project</Label>
               <Select>
@@ -68,7 +66,23 @@ export function LogTimeSheet({ open, onOpenChange }: LogTimeSheetProps) {
               </Select>
             </div>
 
-            {/* Date Picker */}
+            <div className="space-y-1">
+              <Label className="text-xs">Service / Activity</Label>
+              <Select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select service" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="editing">Photo Editing (€80.00/h)</SelectItem>
+                  <SelectItem value="shooting">Photography (€120.00/h)</SelectItem>
+                  <SelectItem value="consulting">Consulting (€100.00/h)</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-[10px] text-muted-foreground">
+                Determines the hourly rate for this entry.
+              </p>
+            </div>
+
             <div className="space-y-1">
               <Label className="text-xs">Date</Label>
               <Popover>
@@ -95,7 +109,6 @@ export function LogTimeSheet({ open, onOpenChange }: LogTimeSheetProps) {
               </Popover>
             </div>
 
-            {/* Time Inputs */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
                 <Label htmlFor="startTime" className="text-xs">Start Time</Label>
@@ -107,12 +120,16 @@ export function LogTimeSheet({ open, onOpenChange }: LogTimeSheetProps) {
               </div>
             </div>
 
-            {/* Duration Calculation Display (Mocked) */}
-            <div className="rounded-md bg-muted/50 p-3 text-center">
-              <div className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Total Duration</div>
-              <div className="text-2xl font-bold font-mono mt-1">4h 00m</div>
+            <div className="rounded-md bg-muted/50 p-3 flex items-center justify-between border">
+              <div className="text-left">
+                <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Total Time</div>
+                <div className="text-xl font-bold font-mono">4h 00m</div>
+              </div>
+              <div className="text-right">
+                <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Est. Amount</div>
+                <div className="text-xl font-bold font-mono">€320.00</div>
+              </div>
             </div>
-
 
             <div className="space-y-1">
               <Label htmlFor="description" className="text-xs">Description</Label>
@@ -132,7 +149,7 @@ export function LogTimeSheet({ open, onOpenChange }: LogTimeSheetProps) {
                   Mark as Billable
                 </label>
                 <p className="text-[10px] text-muted-foreground">
-                  This time entry will be included in the next invoice.
+                  Include this in the invoice.
                 </p>
               </div>
               <Input id="billable" type="checkbox" className="h-4 w-4 ml-auto" defaultChecked />

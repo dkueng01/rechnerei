@@ -6,6 +6,7 @@ import {
   ClipboardCheck,
   Clock,
   LayoutDashboard,
+  Package,
   ReceiptEuro,
   Send,
 } from "lucide-react"
@@ -40,6 +41,11 @@ const data = {
       title: "Projects",
       url: "/projects",
       icon: ClipboardCheck,
+    },
+    {
+      title: "Catalog",
+      url: "/catalog",
+      icon: Package,
     },
     {
       title: "Time Tracking",
