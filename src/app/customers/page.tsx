@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import { CreateCustomerSheet } from "@/components/create-customer-sheet";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 const customers = [
   {
@@ -39,9 +40,10 @@ export default function CustomersPage() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   return (
-    <div className="flex-1 space-y-2 p-4 min-h-screen">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Customers</h2>
+    <div className="flex-1 space-y-2 p-2 py-6 min-h-screen">
+      <div className="flex items-center items-center space-y-2 gap-2">
+        <SidebarTrigger className="m-0" />
+        <h2 className="text-xl font-bold tracking-tight">Customers</h2>
       </div>
 
       <div className="flex items-center justify-between gap-4 py-4">
