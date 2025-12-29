@@ -79,10 +79,9 @@ export function CreateInvoiceSheet({ open, onOpenChange }: CreateInvoiceSheetPro
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        // No rounded classes here
-        className="w-full sm:max-w-[600px] p-0 h-full border-l flex flex-col"
+        className="w-[400px] sm:w-[600px] p-0 h-full flex flex-col"
       >
-        <SheetHeader className="p-4 sm:p-6 border-b shrink-0 flex flex-row items-center justify-between">
+        <SheetHeader className="p-4 border-b shrink-0 flex flex-row items-center justify-between">
           <SheetTitle>Edit Invoice</SheetTitle>
         </SheetHeader>
 
@@ -92,16 +91,13 @@ export function CreateInvoiceSheet({ open, onOpenChange }: CreateInvoiceSheetPro
           </div>
         </div>
 
-        {/* EDITOR FORM */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-background">
+        <div className="flex-1 overflow-y-auto p-4 bg-background">
           <Tabs defaultValue="details">
-            {/* No rounded classes on TabsList */}
             <TabsList className="w-full mb-6 rounded-none">
               <TabsTrigger value="details" className="flex-1 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-b-primary">Details</TabsTrigger>
               <TabsTrigger value="items" className="flex-1 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-b-primary">Items</TabsTrigger>
             </TabsList>
 
-            {/* Tab: General Details */}
             <TabsContent value="details" className="space-y-4 mt-0">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
@@ -137,7 +133,6 @@ export function CreateInvoiceSheet({ open, onOpenChange }: CreateInvoiceSheetPro
               </div>
             </TabsContent>
 
-            {/* Tab: Items */}
             <TabsContent value="items" className="space-y-4 mt-0">
               {data.items.map((item, i) => (
                 <div key={i} className="flex gap-2 items-start border p-3 bg-muted/20">
@@ -170,8 +165,7 @@ export function CreateInvoiceSheet({ open, onOpenChange }: CreateInvoiceSheetPro
           </Tabs>
         </div>
 
-        {/* FOOTER ACTIONS */}
-        <SheetFooter className="p-4 sm:p-6 border-t bg-background shrink-0 flex flex-row justify-end gap-2">
+        <SheetFooter className="p-4 border-t bg-background shrink-0 flex flex-row justify-end gap-2">
           <Button variant="ghost" className="rounded-none" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
