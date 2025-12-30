@@ -20,3 +20,23 @@ export interface CompanySettings {
   contact_phone: string;
   website: string;
 }
+
+export interface Customer {
+  id?: number;
+  user_id?: string;
+  name: string;
+  email?: string;
+  billing_email?: string;
+  phone?: string;
+  website?: string;
+  contact_person?: string;
+  address_line_1?: string;
+  address_line_2?: string;
+  city?: string;
+  state?: string;
+  postal_code?: string;
+  country?: string;
+  vat_number?: string;
+  note?: string;
+  created_at?: string;
+}

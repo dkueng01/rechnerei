@@ -8,11 +8,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { MoreHorizontal, Plus, Search, Users } from "lucide-react";
+import { MoreHorizontal, Plus, Search, Loader2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,26 +19,53 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { CreateCustomerSheet } from "@/components/create-customer-sheet";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { stackClientApp } from "@/stack/client";
-
-const customers = [
-  {
-    id: "1",
-    name: "Feuerwehr Raggal",
-    contact: "Patrick Jenny",
-    email: "fueheee@raggal.com",
-    invoices: 0,
-    projects: 0,
-    status: "active",
-  },
-];
+import { Customer } from "@/lib/types";
+import { CustomerService } from "@/services/customer-service";
 
 export default function CustomersPage() {
-  const user = stackClientApp.useUser({ or: 'redirect' })
+  const user = stackClientApp.useUser({ or: 'redirect' });
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const loadCustomers = useCallback(async () => {
+    if (!user) return;
+    try {
+      setIsLoading(true);
+      const data = await CustomerService.getAll(user);
+      setCustomers(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    loadCustomers();
+  }, [loadCustomers]);
+
+  const handleDelete = async (id: number) => {
+    if (!user) return;
+    try {
+      await CustomerService.delete(user, id);
+      loadCustomers();
+    } catch (error) {
+    }
+  };
+
+  const filteredCustomers = customers.filter(c =>
+    c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    c.contact_person?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    c.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    c.city?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="flex-1 space-y-2 p-2 py-6 min-h-screen">
@@ -54,6 +80,8 @@ export default function CustomersPage() {
           <Input
             placeholder="Kunden suchen..."
             className="pl-8"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <Button onClick={() => setIsSheetOpen(true)}>
@@ -68,52 +96,80 @@ export default function CustomersPage() {
               <TableHead>Name</TableHead>
               <TableHead>Ansprechperson</TableHead>
               <TableHead>E-Mail</TableHead>
-              <TableHead>Rechnungen</TableHead>
-              <TableHead>Projekte</TableHead>
-              <TableHead>Tags</TableHead>
+              <TableHead>Stadt</TableHead>
               <TableHead className="text-right">Aktionen</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {customers.map((customer) => (
-              <TableRow key={customer.id}>
-                <TableCell className="font-medium">
-                  <div className="flex items-center gap-3">
-                    <Avatar className="h-6 w-6">
-                      <AvatarFallback className="text-[10px]">FR</AvatarFallback>
-                    </Avatar>
-                    {customer.name}
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={5} className="h-24 text-center">
+                  <div className="flex justify-center items-center gap-2 text-muted-foreground">
+                    <Loader2 className="h-4 w-4 animate-spin" /> Laden...
                   </div>
                 </TableCell>
-                <TableCell className="text-muted-foreground">{customer.contact}</TableCell>
-                <TableCell className="text-muted-foreground">{customer.email}</TableCell>
-                <TableCell className="text-muted-foreground">{customer.invoices || "-"}</TableCell>
-                <TableCell className="text-muted-foreground">{customer.projects || "-"}</TableCell>
-                <TableCell>
-                </TableCell>
-                <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
-                        <span className="sr-only">Menü öffnen</span>
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
-                      <DropdownMenuItem>Details bearbeiten</DropdownMenuItem>
-                      <DropdownMenuItem>Rechnung erstellen</DropdownMenuItem>
-                      <DropdownMenuItem className="text-destructive">Löschen</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+              </TableRow>
+            ) : filteredCustomers.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
+                  Keine Kunden gefunden.
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              filteredCustomers.map((customer) => (
+                <TableRow key={customer.id}>
+                  <TableCell className="font-medium">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-6 w-6 rounded-none">
+                        <AvatarFallback className="text-[10px] rounded-none">
+                          {customer.name.substring(0, 2).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      {customer.name}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {customer.contact_person || "-"}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {customer.email || "-"}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {customer.city || "-"}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0 rounded-none">
+                          <span className="sr-only">Menü öffnen</span>
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="rounded-none">
+                        <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
+                        <DropdownMenuItem className="rounded-none">Details bearbeiten</DropdownMenuItem>
+                        <DropdownMenuItem className="rounded-none">Rechnung erstellen</DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="text-destructive rounded-none"
+                          onClick={() => customer.id && handleDelete(customer.id)}
+                        >
+                          Löschen
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </div>
 
-      <CreateCustomerSheet open={isSheetOpen} onOpenChange={setIsSheetOpen} />
+      <CreateCustomerSheet
+        open={isSheetOpen}
+        onOpenChange={setIsSheetOpen}
+        onSuccess={loadCustomers}
+      />
     </div>
   );
 }
