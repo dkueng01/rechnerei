@@ -2,16 +2,17 @@
 
 import * as React from "react"
 import {
-  IconHelp,
-  IconSettings,
-  IconUsers,
-  IconSend,
-  IconDashboard,
-} from "@tabler/icons-react"
+  BookUser,
+  ClipboardCheck,
+  Clock,
+  Landmark,
+  LayoutDashboard,
+  Package,
+  ReceiptEuro,
+  Send,
+  Settings,
+} from "lucide-react"
 
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
   SidebarContent,
@@ -21,58 +22,81 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import Image from "next/image"
+import { NavMain } from "./nav-main"
+import { NavSecondary } from "./nav-secondary"
+import { NavUser } from "./nav-user"
+import { stackClientApp } from "@/stack/client"
 
 const data = {
-  user: {
-    name: "David K.",
-    email: "david@kuengcreative.studio",
-    avatar: "/logo.png",
-  },
   navMain: [
     {
       title: "Dashboard",
-      url: "/",
-      icon: IconDashboard,
+      url: "/dashboard",
+      icon: LayoutDashboard,
+      isActive: true,
     },
     {
-      title: "Customers",
+      title: "Kunden",
       url: "/customers",
-      icon: IconUsers,
+      icon: BookUser,
+    },
+    {
+      title: "Projekte",
+      url: "/projects",
+      icon: ClipboardCheck,
+    },
+    {
+      title: "Katalog",
+      url: "/catalog",
+      icon: Package,
+    },
+    {
+      title: "Zeiterfassung",
+      url: "/time-tracking",
+      icon: Clock,
+    },
+    {
+      title: "Rechnungen",
+      url: "/invoices",
+      icon: ReceiptEuro,
+    },
+    {
+      title: "Finanzen",
+      url: "/finances",
+      icon: Landmark,
+    },
+    {
+      title: "Einstellungen",
+      url: "/settings",
+      icon: Settings,
     },
   ],
   navSecondary: [
     {
-      title: "Settings",
-      url: "/settings",
-      icon: IconSettings,
-    },
-    {
-      title: "Get Help",
-      url: "/help",
-      icon: IconHelp,
-    },
-    {
       title: "Feedback",
       url: "https://insigh.to/b/rechnerei",
-      icon: IconSend,
+      icon: Send,
     },
   ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const user = stackClientApp.useUser();
+
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
+    <Sidebar variant="floating" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
-              <a href="/">
-                <Image src={'/logo.png'} alt="Rechnerei Logo" width={32} height={32} className="drop-shadow-sm" />
-                <span className="text-base font-semibold">RECHNEREI</span>
+            <SidebarMenuButton size="lg" asChild>
+              <a href="#">
+                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center">
+                  <span className="font-mono text-lg">R</span>
+                </div>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">RECHNEREI</span>
+                  <span className="truncate text-xs">v0.1.0</span>
+                </div>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -83,7 +107,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   )

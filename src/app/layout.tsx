@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { StackProvider, StackTheme } from "@stackframe/stack";
 import { stackClientApp } from "../stack/client";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 
-import { Analytics } from "@vercel/analytics/next"
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,8 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "RECHNEREI",
-  description:
-    "Erstelle Rechnungen, verwalte Kunden & Aufträge – rechtssicher, schnell und ganz ohne komplizierte Buchhaltung.",
+  description: "Servus to simple finances.",
 };
 
 export default function RootLayout({
@@ -28,13 +27,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      ><StackProvider app={stackClientApp}><StackTheme>
-        {children}
-        <Analytics />
-      </StackTheme></StackProvider></body>
+    <html lang="en" className={inter.variable}>
+      <StackProvider app={stackClientApp}>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <StackTheme>
+            {children}
+          </StackTheme>
+        </body>
+      </StackProvider>
     </html>
   );
 }
