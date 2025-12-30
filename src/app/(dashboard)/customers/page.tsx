@@ -31,6 +31,7 @@ export default function CustomersPage() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const [customers, setCustomers] = useState<Customer[]>([]);
+  const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -67,6 +68,16 @@ export default function CustomersPage() {
     c.city?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleOpenCreate = () => {
+    setEditingCustomer(null);
+    setIsSheetOpen(true);
+  };
+
+  const handleOpenEdit = (customer: Customer) => {
+    setEditingCustomer(customer);
+    setIsSheetOpen(true);
+  };
+
   return (
     <div className="flex-1 space-y-2 p-2 py-6 min-h-screen">
       <div className="flex items-center items-center space-y-2 gap-2">
@@ -84,7 +95,7 @@ export default function CustomersPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <Button onClick={() => setIsSheetOpen(true)}>
+        <Button onClick={handleOpenCreate}>
           <Plus className="mr-2 h-4 w-4" /> Kunde hinzufügen
         </Button>
       </div>
@@ -147,7 +158,7 @@ export default function CustomersPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="rounded-none">
                         <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
-                        <DropdownMenuItem className="rounded-none">Details bearbeiten</DropdownMenuItem>
+                        <DropdownMenuItem className="rounded-none" onClick={() => handleOpenEdit(customer)}>Details bearbeiten</DropdownMenuItem>
                         <DropdownMenuItem className="rounded-none">Rechnung erstellen</DropdownMenuItem>
                         <DropdownMenuItem
                           className="text-destructive rounded-none"
@@ -169,6 +180,7 @@ export default function CustomersPage() {
         open={isSheetOpen}
         onOpenChange={setIsSheetOpen}
         onSuccess={loadCustomers}
+        customerToEdit={editingCustomer}
       />
     </div>
   );

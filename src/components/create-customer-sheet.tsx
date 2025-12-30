@@ -20,7 +20,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Customer } from "@/lib/types";
 import { CustomerService } from "@/services/customer-service";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { stackClientApp } from "@/stack/client";
 import { Loader2 } from "lucide-react";
 
@@ -28,9 +28,10 @@ interface CreateCustomerSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSuccess?: () => void;
+  customerToEdit?: Customer | null;
 }
 
-const initialData: Partial<Customer> = {
+const emptyData: Partial<Customer> = {
   name: "",
   email: "",
   billing_email: "",
@@ -47,10 +48,20 @@ const initialData: Partial<Customer> = {
   note: "",
 };
 
-export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCustomerSheetProps) {
+export function CreateCustomerSheet({ open, onOpenChange, onSuccess, customerToEdit }: CreateCustomerSheetProps) {
   const user = stackClientApp.useUser();
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState<Partial<Customer>>(initialData);
+  const [formData, setFormData] = useState<Partial<Customer>>(emptyData);
+
+  useEffect(() => {
+    if (open) {
+      if (customerToEdit) {
+        setFormData(customerToEdit);
+      } else {
+        setFormData(emptyData);
+      }
+    }
+  }, [open, customerToEdit]);
 
   const updateField = (field: keyof Customer, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -64,8 +75,13 @@ export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCus
 
     setIsLoading(true);
     try {
-      await CustomerService.create(user, formData);
-      setFormData(initialData);
+      if (customerToEdit && customerToEdit.id) {
+        await CustomerService.update(user, customerToEdit.id, formData);
+      } else {
+        await CustomerService.create(user, formData);
+      }
+
+      setFormData(emptyData);
       onOpenChange(false);
       if (onSuccess) onSuccess();
     } catch (error: any) {
@@ -80,9 +96,9 @@ export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCus
       <SheetContent className="w-[400px] sm:w-[540px] p-0 flex flex-col h-full">
 
         <SheetHeader className="p-4 border-b shrink-0">
-          <SheetTitle>Kunden anlegen</SheetTitle>
+          <SheetTitle>{customerToEdit ? "Kunde bearbeiten" : "Kunde anlegen"}</SheetTitle>
           <SheetDescription>
-            Fügen Sie einen neuen Kunden hinzu, um Rechnungen und Zeiterfassung zu verwalten.
+            {customerToEdit ? "Ändern Sie die Details des Kunden." : "Fügen Sie einen neuen Kunden hinzu."}
           </SheetDescription>
         </SheetHeader>
 
@@ -98,7 +114,7 @@ export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCus
                   id="name"
                   placeholder="Acme Inc"
                   className="rounded-none"
-                  value={formData.name}
+                  value={formData.name || ""}
                   onChange={(e) => updateField("name", e.target.value)}
                 />
               </div>
@@ -110,7 +126,7 @@ export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCus
                   type="email"
                   placeholder="acme@beispiel.com"
                   className="rounded-none"
-                  value={formData.email}
+                  value={formData.email || ""}
                   onChange={(e) => updateField("email", e.target.value)}
                 />
               </div>
@@ -122,7 +138,7 @@ export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCus
                   type="email"
                   placeholder="buchhaltung@beispiel.com"
                   className="rounded-none"
-                  value={formData.billing_email}
+                  value={formData.billing_email || ""}
                   onChange={(e) => updateField("billing_email", e.target.value)}
                 />
                 <p className="text-[10px] text-muted-foreground">Zusätzliche E-Mail für den Rechnungsversand.</p>
@@ -134,7 +150,7 @@ export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCus
                   id="phone"
                   placeholder="+43 1 1234567"
                   className="rounded-none"
-                  value={formData.phone}
+                  value={formData.phone || ""}
                   onChange={(e) => updateField("phone", e.target.value)}
                 />
               </div>
@@ -145,7 +161,7 @@ export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCus
                   id="website"
                   placeholder="acme.com"
                   className="rounded-none"
-                  value={formData.website}
+                  value={formData.website || ""}
                   onChange={(e) => updateField("website", e.target.value)}
                 />
               </div>
@@ -156,7 +172,7 @@ export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCus
                   id="contactPerson"
                   placeholder="Max Mustermann"
                   className="rounded-none"
-                  value={formData.contact_person}
+                  value={formData.contact_person || ""}
                   onChange={(e) => updateField("contact_person", e.target.value)}
                 />
               </div>
@@ -173,7 +189,7 @@ export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCus
                   id="address1"
                   placeholder="Musterstraße 1"
                   className="rounded-none"
-                  value={formData.address_line_1}
+                  value={formData.address_line_1 || ""}
                   onChange={(e) => updateField("address_line_1", e.target.value)}
                 />
               </div>
@@ -184,7 +200,7 @@ export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCus
                   id="address2"
                   placeholder="Top 3"
                   className="rounded-none"
-                  value={formData.address_line_2}
+                  value={formData.address_line_2 || ""}
                   onChange={(e) => updateField("address_line_2", e.target.value)}
                 />
               </div>
@@ -192,7 +208,7 @@ export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCus
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <Label className="text-xs">Land</Label>
-                  <Select onValueChange={(val) => updateField("country", val)} value={formData.country}>
+                  <Select onValueChange={(val) => updateField("country", val)} value={formData.country || "at"}>
                     <SelectTrigger className="rounded-none">
                       <SelectValue placeholder="Land wählen" />
                     </SelectTrigger>
@@ -208,7 +224,7 @@ export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCus
                   <Input
                     placeholder="Wien"
                     className="rounded-none"
-                    value={formData.city}
+                    value={formData.city || ""}
                     onChange={(e) => updateField("city", e.target.value)}
                   />
                 </div>
@@ -220,7 +236,7 @@ export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCus
                   <Input
                     placeholder="Wien"
                     className="rounded-none"
-                    value={formData.state}
+                    value={formData.state || ""}
                     onChange={(e) => updateField("state", e.target.value)}
                   />
                 </div>
@@ -229,7 +245,7 @@ export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCus
                   <Input
                     placeholder="1010"
                     className="rounded-none"
-                    value={formData.postal_code}
+                    value={formData.postal_code || ""}
                     onChange={(e) => updateField("postal_code", e.target.value)}
                   />
                 </div>
@@ -241,7 +257,7 @@ export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCus
                   id="vat"
                   placeholder="UID eingeben"
                   className="rounded-none"
-                  value={formData.vat_number}
+                  value={formData.vat_number || ""}
                   onChange={(e) => updateField("vat_number", e.target.value)}
                 />
               </div>
@@ -252,7 +268,7 @@ export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCus
                   id="note"
                   placeholder="Zusätzliche Informationen..."
                   className="min-h-[100px] rounded-none"
-                  value={formData.note}
+                  value={formData.note || ""}
                   onChange={(e) => updateField("note", e.target.value)}
                 />
               </div>
@@ -276,7 +292,7 @@ export function CreateCustomerSheet({ open, onOpenChange, onSuccess }: CreateCus
             disabled={isLoading}
           >
             {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-            Erstellen
+            {customerToEdit ? "Speichern" : "Erstellen"}
           </Button>
         </SheetFooter>
 
