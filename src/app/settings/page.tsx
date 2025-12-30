@@ -26,14 +26,85 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Upload, Save, Building2, Gavel, Wallet } from "lucide-react";
+import { Upload, Save, Building2, Gavel, Wallet, Loader2 } from "lucide-react";
 import { stackClientApp } from "@/stack/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UploadButton } from "@/utils/uploadthing";
+import { CompanySettings } from "@/lib/types";
+import { CompanySettingsService } from "@/services/company-settings-service";
+
+const initialSettings: CompanySettings = {
+  company_name: "",
+  logo_url: "",
+  first_name: "",
+  last_name: "",
+  address: "",
+  legal_form: "eu",
+  commercial_register_number: "",
+  registration_court: "",
+  is_small_business: true,
+  vat_id: "",
+  default_tax_rate: 20,
+  bank_name: "",
+  iban: "",
+  bic: "",
+  account_holder: "",
+  contact_email: "",
+  contact_phone: "",
+  website: ""
+};
 
 export default function SettingsPage() {
   const user = stackClientApp.useUser({ or: 'redirect' });
-  const [isSmallBusiness, setIsSmallBusiness] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [formData, setFormData] = useState<CompanySettings>(initialSettings);
+
+  useEffect(() => {
+    async function loadSettings() {
+      if (!user) return;
+      try {
+        const data = await CompanySettingsService.get(user);
+        if (data) {
+          setFormData(data);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadSettings();
+  }, [user]);
+
+  const handleSave = async () => {
+    if (!user) return;
+    setSaving(true);
+    try {
+      await CompanySettingsService.upsert(user, formData);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const updateField = (field: keyof CompanySettings, value: any) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const checkImageDimensions = (file: File): Promise<boolean> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        const isValid = img.width <= 500 && img.height <= 500;
+        URL.revokeObjectURL(img.src);
+        resolve(isValid);
+      };
+    });
+  };
 
   return (
     <div className="flex-1 space-y-2 p-2 py-6 min-h-screen flex flex-col">
@@ -78,10 +149,8 @@ export default function SettingsPage() {
           </TabsTrigger>
         </TabsList>
 
-        {/* --- GENERAL TAB --- */}
         <TabsContent value="general" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {/* Logo Section */}
             <Card className="rounded-none lg:col-span-1">
               <CardHeader>
                 <CardTitle>Firmenlogo</CardTitle>
@@ -89,16 +158,37 @@ export default function SettingsPage() {
               </CardHeader>
               <CardContent className="flex flex-col items-center justify-center space-y-4">
                 <Avatar className="h-32 w-32 border-2 border-muted">
-                  <AvatarImage src="/placeholder-logo.png" />
-                  <AvatarFallback className="text-2xl bg-muted">CN</AvatarFallback>
+                  <AvatarImage src={formData.logo_url || ""} />
+                  <AvatarFallback className="text-2xl bg-muted">Logo</AvatarFallback>
                 </Avatar>
-                <Button variant="outline" className="rounded-none w-full">
-                  <Upload className="mr-2 h-4 w-4" /> Neues hochladen
-                </Button>
+                <div className="w-full mb-1">
+                  <UploadButton
+                    endpoint="companyLogo"
+                    onBeforeUploadBegin={async (files) => {
+                      const file = files[0];
+                      const isValidDimensions = await checkImageDimensions(file);
+
+                      if (!isValidDimensions) {
+                        return [];
+                      }
+
+                      return files;
+                    }}
+                    onClientUploadComplete={(res) => {
+                      if (res?.[0]) {
+                        updateField("logo_url", res[0].url);
+                      }
+                    }}
+                    appearance={{
+                      button: "rounded-none w-full bg-primary text-primary-foreground hover:bg-primary/90 text-sm h-9 px-4 py-2",
+                      allowedContent: "hidden"
+                    }}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground text-center">Erlaubtes Format: PNG (max. 500x500px, 1 MB)</p>
               </CardContent>
             </Card>
 
-            {/* Basic Info Section */}
             <Card className="rounded-none lg:col-span-2">
               <CardHeader>
                 <CardTitle>Unternehmensdetails</CardTitle>
@@ -107,28 +197,43 @@ export default function SettingsPage() {
               <CardContent className="space-y-4">
                 <div className="space-y-1">
                   <Label>Firmenname</Label>
-                  <Input defaultValue="Muster Design e.U." className="rounded-none" />
+                  <Input
+                    value={formData.company_name || ""}
+                    onChange={(e) => updateField("company_name", e.target.value)}
+                    className="rounded-none"
+                  />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <Label>Vorname</Label>
-                    <Input defaultValue="Max" className="rounded-none" />
+                    <Input
+                      value={formData.first_name || ""}
+                      onChange={(e) => updateField("first_name", e.target.value)}
+                      className="rounded-none"
+                    />
                   </div>
                   <div className="space-y-1">
                     <Label>Nachname</Label>
-                    <Input defaultValue="Mustermann" className="rounded-none" />
+                    <Input
+                      value={formData.last_name || ""}
+                      onChange={(e) => updateField("last_name", e.target.value)}
+                      className="rounded-none"
+                    />
                   </div>
                 </div>
                 <div className="space-y-1">
                   <Label>Adresse</Label>
-                  <Textarea defaultValue="Musterstraße 12&#10;1010 Wien" className="rounded-none min-h-[80px]" />
+                  <Textarea
+                    value={formData.address || ""}
+                    onChange={(e) => updateField("address", e.target.value)}
+                    className="rounded-none min-h-[80px]"
+                  />
                 </div>
               </CardContent>
             </Card>
           </div>
         </TabsContent>
 
-        {/* --- LEGAL & TAX TAB --- */}
         <TabsContent value="legal" className="space-y-4">
           <Card className="rounded-none">
             <CardHeader>
@@ -140,7 +245,10 @@ export default function SettingsPage() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-1">
                   <Label>Rechtsform</Label>
-                  <Select defaultValue="eu">
+                  <Select
+                    value={formData.legal_form}
+                    onValueChange={(val) => updateField("legal_form", val)}
+                  >
                     <SelectTrigger className="rounded-none">
                       <SelectValue placeholder="Rechtsform wählen" />
                     </SelectTrigger>
@@ -156,14 +264,22 @@ export default function SettingsPage() {
 
                 <div className="space-y-1">
                   <Label>Firmenbuchnummer (FN)</Label>
-                  <Input placeholder="z.B. FN 123456 x" className="rounded-none" />
+                  <Input
+                    value={formData.commercial_register_number || ""}
+                    onChange={(e) => updateField("commercial_register_number", e.target.value)}
+                    className="rounded-none"
+                  />
                   <p className="text-[10px] text-muted-foreground">Optional falls nicht registriert.</p>
                 </div>
               </div>
 
               <div className="space-y-1">
                 <Label>Firmenbuchgericht</Label>
-                <Input placeholder="z.B. Handelsgericht Wien" className="rounded-none" />
+                <Input
+                  value={formData.registration_court || ""}
+                  onChange={(e) => updateField("registration_court", e.target.value)}
+                  className="rounded-none"
+                />
               </div>
 
               <div className="border-t pt-6">
@@ -175,20 +291,29 @@ export default function SettingsPage() {
                     </div>
                   </div>
                   <Switch
-                    checked={isSmallBusiness}
-                    onCheckedChange={setIsSmallBusiness}
+                    checked={formData.is_small_business}
+                    onCheckedChange={(c) => updateField("is_small_business", c)}
                   />
                 </div>
 
-                {!isSmallBusiness && (
+                {!formData.is_small_business && (
                   <div className="mt-4 grid md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-top-2">
                     <div className="space-y-1">
                       <Label>UID-Nummer</Label>
-                      <Input placeholder="ATU..." className="rounded-none" />
+                      <Input
+                        value={formData.vat_id || ""}
+                        onChange={(e) => updateField("vat_id", e.target.value)}
+                        className="rounded-none"
+                      />
                     </div>
                     <div className="space-y-1">
                       <Label>Standard-Steuersatz (%)</Label>
-                      <Input type="number" defaultValue="20" className="rounded-none" />
+                      <Input
+                        type="number"
+                        value={formData.default_tax_rate}
+                        onChange={(e) => updateField("default_tax_rate", parseFloat(e.target.value))}
+                        className="rounded-none"
+                      />
                     </div>
                   </div>
                 )}
@@ -198,7 +323,6 @@ export default function SettingsPage() {
           </Card>
         </TabsContent>
 
-        {/* --- BANK & CONTACT TAB --- */}
         <TabsContent value="bank" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <Card className="rounded-none">
@@ -209,19 +333,19 @@ export default function SettingsPage() {
               <CardContent className="space-y-4">
                 <div className="space-y-1">
                   <Label>Bankname</Label>
-                  <Input placeholder="z.B. Erste Bank" className="rounded-none" />
+                  <Input value={formData.bank_name || ""} onChange={(e) => updateField("bank_name", e.target.value)} className="rounded-none" />
                 </div>
                 <div className="space-y-1">
                   <Label>IBAN</Label>
-                  <Input placeholder="AT12 0000 0000 0000 0000" className="rounded-none" />
+                  <Input value={formData.iban || ""} onChange={(e) => updateField("iban", e.target.value)} className="rounded-none" />
                 </div>
                 <div className="space-y-1">
                   <Label>BIC / SWIFT</Label>
-                  <Input placeholder="BANKATWW" className="rounded-none" />
+                  <Input value={formData.bic || ""} onChange={(e) => updateField("bic", e.target.value)} className="rounded-none" />
                 </div>
                 <div className="space-y-1">
                   <Label>Kontoinhaber</Label>
-                  <Input placeholder="Max Mustermann" className="rounded-none" />
+                  <Input value={formData.account_holder || ""} onChange={(e) => updateField("account_holder", e.target.value)} className="rounded-none" />
                 </div>
               </CardContent>
             </Card>
@@ -234,25 +358,29 @@ export default function SettingsPage() {
               <CardContent className="space-y-4">
                 <div className="space-y-1">
                   <Label>E-Mail Adresse</Label>
-                  <Input type="email" defaultValue="office@musterdesign.at" className="rounded-none" />
+                  <Input type="email" value={formData.contact_email || ""} onChange={(e) => updateField("contact_email", e.target.value)} className="rounded-none" />
                 </div>
                 <div className="space-y-1">
                   <Label>Telefonnummer</Label>
-                  <Input type="tel" defaultValue="+43 660 12345678" className="rounded-none" />
+                  <Input type="tel" value={formData.contact_phone || ""} onChange={(e) => updateField("contact_phone", e.target.value)} className="rounded-none" />
                 </div>
                 <div className="space-y-1">
                   <Label>Webseite</Label>
-                  <Input defaultValue="www.musterdesign.at" className="rounded-none" />
+                  <Input value={formData.website || ""} onChange={(e) => updateField("website", e.target.value)} className="rounded-none" />
                 </div>
               </CardContent>
             </Card>
           </div>
         </TabsContent>
 
-        {/* Sticky Save Bar */}
         <div className="flex justify-end pt-4">
-          <Button className="rounded-none min-w-[150px]">
-            <Save className="mr-2 h-4 w-4" /> Änderungen speichern
+          <Button className="rounded-none min-w-[150px]" onClick={handleSave} disabled={saving}>
+            {saving ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Save className="mr-2 h-4 w-4" />
+            )}
+            Änderungen speichern
           </Button>
         </div>
 
