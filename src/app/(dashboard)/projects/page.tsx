@@ -15,6 +15,7 @@ import {
   MoreHorizontal,
   Plus,
   Search,
+  Loader2
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -24,32 +25,62 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { CreateProjectSheet } from "@/components/create-project-sheet";
 import { stackClientApp } from "@/stack/client";
-
-const projects = [
-  {
-    id: "1",
-    name: "100 Jahre Party",
-    customer: "Feuerwehr Raggal",
-    totalTime: "4h 15m",
-    status: "In Progress",
-    amount: "€170.00"
-  },
-  {
-    id: "2",
-    name: "Website Redesign",
-    customer: "Bäckerei Müller",
-    totalTime: "12h 00m",
-    status: "In Progress",
-    amount: "€960.00"
-  },
-];
+import { Project } from "@/lib/types";
+import { ProjectService } from "@/services/project-service";
 
 export default function ProjectsPage() {
   const user = stackClientApp.useUser({ or: 'redirect' });
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const loadProjects = useCallback(async () => {
+    if (!user) return;
+    try {
+      setIsLoading(true);
+      const data = await ProjectService.getAll(user);
+      setProjects(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    loadProjects();
+  }, [loadProjects]);
+
+  const handleOpenCreate = () => {
+    setEditingProject(null);
+    setIsSheetOpen(true);
+  };
+
+  const handleOpenEdit = (project: Project) => {
+    setEditingProject(project);
+    setIsSheetOpen(true);
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!user) return;
+    try {
+      await ProjectService.delete(user, id);
+      loadProjects();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const filteredProjects = projects.filter(p =>
+    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (p.customers?.name || "").toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="flex-1 space-y-2 p-2 py-6 min-h-screen flex flex-col">
@@ -63,10 +94,12 @@ export default function ProjectsPage() {
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Projekte suchen..."
-            className="pl-8"
+            className="pl-8 rounded-none"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <Button onClick={() => setIsSheetOpen(true)}>
+        <Button onClick={handleOpenCreate} className="rounded-none">
           <Plus className="mr-2 h-4 w-4" /> Projekt erstellen
         </Button>
       </div>
@@ -77,54 +110,88 @@ export default function ProjectsPage() {
             <TableRow>
               <TableHead>Projekt</TableHead>
               <TableHead>Kunde</TableHead>
-              <TableHead>Gesamtzeit</TableHead>
-              <TableHead>Betrag</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Satz / h</TableHead>
               <TableHead className="text-right">Aktionen</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {projects.map((project) => (
-              <TableRow key={project.id}>
-                <TableCell className="font-medium">{project.name}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <Avatar className="h-5 w-5">
-                      <AvatarFallback className="text-[9px]">FR</AvatarFallback>
-                    </Avatar>
-                    {project.customer}
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={5} className="h-24 text-center">
+                  <div className="flex justify-center items-center gap-2 text-muted-foreground">
+                    <Loader2 className="h-4 w-4 animate-spin" /> Laden...
                   </div>
-                </TableCell>
-                <TableCell className="text-muted-foreground">{project.totalTime}</TableCell>
-                <TableCell className="text-muted-foreground">{project.amount}</TableCell>
-                <TableCell>
-                  <div className="inline-flex items-center border px-2.5 py-0.5 text-xs font-semibold text-foreground transition-colors">
-                    {project.status === 'In Progress' ? 'In Arbeit' : project.status}
-                  </div>
-                </TableCell>
-                <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
-                        <span className="sr-only">Menü öffnen</span>
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
-                      <DropdownMenuItem>Zeit erfassen</DropdownMenuItem>
-                      <DropdownMenuItem>Details bearbeiten</DropdownMenuItem>
-                      <DropdownMenuItem className="text-destructive">Archivieren</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
                 </TableCell>
               </TableRow>
-            ))}
+            ) : filteredProjects.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
+                  Keine Projekte gefunden.
+                </TableCell>
+              </TableRow>
+            ) : (
+              filteredProjects.map((project) => (
+                <TableRow key={project.id}>
+                  <TableCell className="font-medium">{project.name}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Avatar className="h-5 w-5 rounded-none">
+                        <AvatarFallback className="text-[9px] rounded-none">
+                          {project.customers?.name?.substring(0, 2).toUpperCase() || "UN"}
+                        </AvatarFallback>
+                      </Avatar>
+                      {project.customers?.name || "-"}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="inline-flex items-center border px-2.5 py-0.5 text-xs font-semibold text-foreground transition-colors uppercase">
+                      {project.status === 'in_progress' ? 'In Arbeit' :
+                        project.status === 'completed' ? 'Fertig' : 'Pausiert'}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {project.hourly_rate ? `€ ${project.hourly_rate}` : '-'}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0 rounded-none">
+                          <span className="sr-only">Menü öffnen</span>
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="rounded-none">
+                        <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
+                        <DropdownMenuItem className="rounded-none">Zeit erfassen</DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="rounded-none"
+                          onClick={() => handleOpenEdit(project)}
+                        >
+                          Details bearbeiten
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="text-destructive rounded-none"
+                          onClick={() => project.id && handleDelete(project.id)}
+                        >
+                          Löschen
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </div>
 
-      <CreateProjectSheet open={isSheetOpen} onOpenChange={setIsSheetOpen} />
+      <CreateProjectSheet
+        open={isSheetOpen}
+        onOpenChange={setIsSheetOpen}
+        onSuccess={loadProjects}
+        projectToEdit={editingProject}
+      />
     </div>
   );
 }

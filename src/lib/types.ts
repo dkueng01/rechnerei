@@ -52,3 +52,20 @@ export interface CatalogItem {
   tax_rate: number;
   created_at?: string;
 }
+
+export interface Project {
+  id?: number;
+  user_id?: string;
+  customer_id?: number | null;
+  name: string;
+  description?: string;
+  status: 'in_progress' | 'completed' | 'on_hold';
+  time_estimate?: number;
+  hourly_rate?: number;
+  currency: string;
+  created_at?: string;
+
+  customers?: {
+    name: string;
+  };
+}
