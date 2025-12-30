@@ -69,3 +69,27 @@ export interface Project {
     name: string;
   };
 }
+
+export interface TimeEntry {
+  id?: number;
+  user_id?: string;
+  project_id?: number;
+  catalog_item_id?: number | null;
+  description?: string;
+  start_time: string;
+  end_time: string;
+  duration_minutes?: number;
+  is_billable: boolean;
+  created_at?: string;
+
+  projects?: {
+    name: string;
+    customers?: {
+      name: string;
+    }
+  };
+  catalog_items?: {
+    name: string;
+    price: number;
+  };
+}
