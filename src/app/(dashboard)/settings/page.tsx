@@ -33,7 +33,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UploadButton } from "@/utils/uploadthing";
 import { CompanySettings } from "@/lib/types";
 import { CompanySettingsService } from "@/services/company-settings-service";
-import { deleteFile } from "../actions/delete-file";
+import { deleteFile } from "../../actions/delete-file";
 
 const initialSettings: CompanySettings = {
   company_name: "",

@@ -3,10 +3,6 @@ import { StackProvider, StackTheme } from "@stackframe/stack";
 import { stackClientApp } from "../stack/client";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
-import { Suspense } from "react";
-import { SuspendedAppSidebar } from "@/components/suspended-app-sidebar";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -22,7 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "RECHNEREI",
-  description: "Servus to simple finances. Manage your customers, track your hustle, and create Austrian-compliant invoices in seconds. Your business, simply calculated.",
+  description: "Servus to simple finances.",
 };
 
 export default function RootLayout({
@@ -35,14 +31,7 @@ export default function RootLayout({
       <StackProvider app={stackClientApp}>
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <StackTheme>
-            <SidebarProvider>
-              <Suspense fallback={<SuspendedAppSidebar />}>
-                <AppSidebar />
-              </Suspense>
-              <main className="w-full">
-                {children}
-              </main>
-            </SidebarProvider>
+            {children}
           </StackTheme>
         </body>
       </StackProvider>
