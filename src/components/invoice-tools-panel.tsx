@@ -160,7 +160,7 @@ export function InvoiceToolsSheet({
                   <div className="border border-l-2 border-l-primary p-3 space-y-2 bg-muted/5">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-medium flex items-center gap-2">
-                        <Clock className="h-3 w-3" /> Zeiterfassung
+                        Zeiterfassung
                       </span>
                       <span className="text-[10px] text-muted-foreground">
                         {unbilledTimes.length} offen
