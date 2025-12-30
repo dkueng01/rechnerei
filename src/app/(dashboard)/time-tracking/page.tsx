@@ -2,28 +2,78 @@
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Plus,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { LogTimeSheet } from "@/components/log-time-sheet";
 import { stackClientApp } from "@/stack/client";
+import {
+  format,
+  startOfMonth,
+  endOfMonth,
+  startOfWeek,
+  endOfWeek,
+  eachDayOfInterval,
+  addMonths,
+  subMonths,
+  isSameMonth,
+  isToday,
+  addWeeks,
+  subWeeks
+} from "date-fns";
+import { de } from "date-fns/locale";
 
-const days = Array.from({ length: 35 }, (_, i) => {
-  const day = i - 2;
-  return {
-    date: day > 0 && day <= 30 ? day : null,
-    isCurrentMonth: day > 0 && day <= 30,
-    hasEvent: day === 9 || day === 12
-  };
-});
+type ViewType = 'month' | 'week';
 
 export default function TimeTrackingPage() {
   const user = stackClientApp.useUser({ or: 'redirect' });
+
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [view, setView] = useState<ViewType>('month');
   const [isLogTimeOpen, setIsLogTimeOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+
+  const calendarDays = useMemo(() => {
+    const weekStartOptions = { weekStartsOn: 1 as const };
+
+    if (view === 'month') {
+      const monthStart = startOfMonth(currentDate);
+      const monthEnd = endOfMonth(monthStart);
+      const startDate = startOfWeek(monthStart, weekStartOptions);
+      const endDate = endOfWeek(monthEnd, weekStartOptions);
+      return eachDayOfInterval({ start: startDate, end: endDate });
+    } else {
+      const startDate = startOfWeek(currentDate, weekStartOptions);
+      const endDate = endOfWeek(currentDate, weekStartOptions);
+      return eachDayOfInterval({ start: startDate, end: endDate });
+    }
+  }, [currentDate, view]);
+
+  const handlePrevious = () => {
+    if (view === 'month') {
+      setCurrentDate(subMonths(currentDate, 1));
+    } else {
+      setCurrentDate(subWeeks(currentDate, 1));
+    }
+  };
+
+  const handleNext = () => {
+    if (view === 'month') {
+      setCurrentDate(addMonths(currentDate, 1));
+    } else {
+      setCurrentDate(addWeeks(currentDate, 1));
+    }
+  };
+
+  const handleDayClick = (date: Date) => {
+    setSelectedDate(date);
+    setIsLogTimeOpen(true);
+  };
+
+  const handleOpenGeneral = () => {
+    setSelectedDate(new Date());
+    setIsLogTimeOpen(true);
+  };
 
   return (
     <div className="flex-1 space-y-2 p-2 py-6 min-h-screen flex flex-col">
@@ -35,11 +85,16 @@ export default function TimeTrackingPage() {
       <div className="flex flex-wrap items-center justify-between gap-4 py-4">
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-2 border px-2 py-1 h-10 bg-background">
-            <Button variant="ghost" size="icon" className="h-6 w-6">
+            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={handlePrevious}>
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            <div className="font-medium text-sm min-w-[80px] text-center">November</div>
-            <Button variant="ghost" size="icon" className="h-6 w-6">
+            <div className="font-medium text-sm min-w-[120px] text-center capitalize">
+              {view === 'month'
+                ? format(currentDate, 'MMMM yyyy', { locale: de })
+                : `KW ${format(currentDate, 'w', { locale: de })} • ${format(currentDate, 'MMM yyyy', { locale: de })}`
+              }
+            </div>
+            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={handleNext}>
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
@@ -51,14 +106,14 @@ export default function TimeTrackingPage() {
         </div>
 
         <div className="flex items-center gap-2 ml-auto sm:ml-0">
-          <Tabs defaultValue="month">
+          <Tabs value={view} onValueChange={(v) => setView(v as ViewType)}>
             <TabsList className="h-10">
               <TabsTrigger value="week">Woche</TabsTrigger>
               <TabsTrigger value="month">Monat</TabsTrigger>
             </TabsList>
           </Tabs>
 
-          <Button onClick={() => setIsLogTimeOpen(true)}>
+          <Button onClick={handleOpenGeneral}>
             <Plus className="mr-2 h-4 w-4" /> Zeit erfassen
           </Button>
         </div>
@@ -67,43 +122,64 @@ export default function TimeTrackingPage() {
       <div className="border flex-1 flex flex-col min-h-[500px] bg-background">
         <div className="overflow-x-auto flex-1 flex flex-col">
           <div className="min-w-[600px] flex-1 flex flex-col">
+
             <div className="grid grid-cols-7 border-b bg-muted/20">
-              {["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"].map((day) => (
-                <div key={day} className="p-2 text-xs text-muted-foreground text-center border-r last:border-r-0">
+              {["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"].map((day) => (
+                <div key={day} className="p-2 text-xs text-muted-foreground text-center border-r last:border-r-0 font-medium">
                   {day}
                 </div>
               ))}
             </div>
 
-            <div className="grid grid-cols-7 grid-rows-5 flex-1">
-              {days.map((day, i) => (
-                <div
-                  key={i}
-                  className={`
-                                border-b border-r p-2 relative min-h-[100px] 
-                                ${(i + 1) % 7 === 0 ? 'border-r-0' : ''}
-                                ${!day.isCurrentMonth ? 'bg-muted/10' : ''}
-                                transition-colors hover:bg-muted/5
-                            `}
-                  onClick={() => day.isCurrentMonth && setIsLogTimeOpen(true)}
-                >
-                  <span className={`text-sm ${!day.isCurrentMonth ? 'text-muted-foreground/30' : 'text-muted-foreground'}`}>
-                    {day.date || ""}
-                  </span>
+            <div className={`grid grid-cols-7 flex-1 ${view === 'month' ? 'auto-rows-fr' : 'grid-rows-1'}`}>
+              {calendarDays.map((day, i) => {
+                const isCurrentMonth = isSameMonth(day, currentDate);
+                const isTodayDate = isToday(day);
 
-                  {day.hasEvent && day.isCurrentMonth && (
-                    <div className="mt-2 text-[10px] bg-muted border p-1 w-full truncate cursor-pointer hover:bg-primary/10 hover:border-primary/20 transition-colors">
-                      100 Jahre Party (4h 15m)
+                const hasEvent = day.getDate() === 15;
+
+                return (
+                  <div
+                    key={day.toISOString()}
+                    className={`
+                      border-b border-r p-2 relative min-h-[100px] flex flex-col gap-1
+                      ${(i + 1) % 7 === 0 ? 'border-r-0' : ''}
+                      ${!isCurrentMonth ? 'bg-muted/10 text-muted-foreground/30' : ''}
+                      ${isTodayDate ? 'bg-primary/5' : ''}
+                      hover:bg-muted/5 transition-colors cursor-pointer group
+                    `}
+                    onClick={() => handleDayClick(day)}
+                  >
+                    <div className="flex justify-between items-start">
+                      <span className={`
+                            text-sm font-medium w-7 h-7 flex items-center justify-center
+                            ${isTodayDate ? 'bg-primary text-primary-foreground' : ''}
+                        `}>
+                        {format(day, 'd')}
+                      </span>
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Plus className="h-4 w-4 text-muted-foreground" />
+                      </div>
                     </div>
-                  )}
-                </div>
-              ))}
+
+                    {hasEvent && (
+                      <div className="mt-1 text-[10px] bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 p-1 w-full truncate">
+                        100 Jahre Party (4h)
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
       </div>
 
-      <LogTimeSheet open={isLogTimeOpen} onOpenChange={setIsLogTimeOpen} />
+      <LogTimeSheet
+        open={isLogTimeOpen}
+        onOpenChange={setIsLogTimeOpen}
+        initialDate={selectedDate}
+      />
     </div>
   );
 }

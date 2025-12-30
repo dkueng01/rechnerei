@@ -195,7 +195,7 @@ export function CreateCatalogItemSheet({ open, onOpenChange, onSuccess, itemToEd
                 type="number"
                 placeholder="20"
                 className="rounded-none"
-                value={formData.tax_rate || "20"}
+                value={formData.tax_rate || "0"}
                 onChange={(e) => updateField("tax_rate", parseFloat(e.target.value))}
               />
             </div>
