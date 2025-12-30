@@ -88,8 +88,7 @@ export default function InvoicesPage() {
           <TableBody>
             {invoices.map((inv) => (
               <TableRow key={inv.id}>
-                <TableCell className="font-medium flex items-center gap-2">
-                  <FileText className="h-4 w-4 text-muted-foreground" />
+                <TableCell className="font-medium">
                   {inv.number}
                 </TableCell>
                 <TableCell>{inv.recipient}</TableCell>

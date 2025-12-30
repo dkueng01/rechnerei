@@ -5,6 +5,7 @@ import {
   BookUser,
   ClipboardCheck,
   Clock,
+  Landmark,
   LayoutDashboard,
   Package,
   ReceiptEuro,
@@ -56,6 +57,11 @@ const data = {
       title: "Invoices",
       url: "/invoices",
       icon: ReceiptEuro,
+    },
+    {
+      title: "Finances",
+      url: "/finances",
+      icon: Landmark,
     },
   ],
   navSecondary: [
