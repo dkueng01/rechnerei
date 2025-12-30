@@ -15,7 +15,8 @@ import {
   Plus,
   Search,
   Package,
-  Clock
+  Clock,
+  Loader2
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -25,20 +26,61 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { CreateCatalogItemSheet } from "@/components/create-catalog-item-sheet";
 import { stackClientApp } from "@/stack/client";
-
-const catalogItems = [
-  { id: "1", name: "Photography (Shooting)", type: "service", price: "€120.00", unit: "Hour" },
-  { id: "2", name: "Photo Editing", type: "service", price: "€80.00", unit: "Hour" },
-  { id: "3", name: "Print A3 (Framed)", type: "product", price: "€45.00", unit: "Piece" },
-  { id: "4", name: "Digital License (Commercial)", type: "product", price: "€250.00", unit: "Flat Fee" },
-];
+import { CatalogItem } from "@/lib/types";
+import { CatalogService } from "@/services/catalog-service";
 
 export default function CatalogPage() {
   const user = stackClientApp.useUser({ or: 'redirect' });
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const [items, setItems] = useState<CatalogItem[]>([]);
+  const [editingItem, setEditingItem] = useState<CatalogItem | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const loadItems = useCallback(async () => {
+    if (!user) return;
+    try {
+      setIsLoading(true);
+      const data = await CatalogService.getAll(user);
+      setItems(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    loadItems();
+  }, [loadItems]);
+
+  const handleOpenCreate = () => {
+    setEditingItem(null);
+    setIsSheetOpen(true);
+  };
+
+  const handleOpenEdit = (item: CatalogItem) => {
+    setEditingItem(item);
+    setIsSheetOpen(true);
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!user) return;
+    try {
+      await CatalogService.delete(user, id);
+      loadItems();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const filteredItems = items.filter(i =>
+    i.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="flex-1 space-y-2 p-2 py-6 min-h-screen flex flex-col">
@@ -52,10 +94,12 @@ export default function CatalogPage() {
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Elemente suchen..."
-            className="pl-8"
+            className="pl-8 rounded-none"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <Button onClick={() => setIsSheetOpen(true)}>
+        <Button onClick={handleOpenCreate} className="rounded-none">
           <Plus className="mr-2 h-4 w-4" /> Element hinzufügen
         </Button>
       </div>
@@ -72,48 +116,83 @@ export default function CatalogPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {catalogItems.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell className="font-medium">{item.name}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    {item.type === 'service' ? (
-                      <>
-                        <Clock className="h-3 w-3" />
-                        <span>Dienstleistung</span>
-                      </>
-                    ) : (
-                      <>
-                        <Package className="h-3 w-3" />
-                        <span>Produkt</span>
-                      </>
-                    )}
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={5} className="h-24 text-center">
+                  <div className="flex justify-center items-center gap-2 text-muted-foreground">
+                    <Loader2 className="h-4 w-4 animate-spin" /> Laden...
                   </div>
                 </TableCell>
-                <TableCell className="text-muted-foreground">{item.price}</TableCell>
-                <TableCell className="text-muted-foreground">{item.unit}</TableCell>
-                <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
-                        <span className="sr-only">Menü öffnen</span>
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
-                      <DropdownMenuItem>Details bearbeiten</DropdownMenuItem>
-                      <DropdownMenuItem className="text-destructive">Löschen</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+              </TableRow>
+            ) : filteredItems.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
+                  Keine Einträge gefunden.
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              filteredItems.map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell className="font-medium">{item.name}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      {item.type === 'service' ? (
+                        <>
+                          <Clock className="h-3 w-3" />
+                          <span>Dienstleistung</span>
+                        </>
+                      ) : (
+                        <>
+                          <Package className="h-3 w-3" />
+                          <span>Produkt</span>
+                        </>
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    € {item.price.toFixed(2)}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground uppercase text-xs">
+                    {item.unit}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0 rounded-none">
+                          <span className="sr-only">Menü öffnen</span>
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="rounded-none">
+                        <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
+                        <DropdownMenuItem
+                          className="rounded-none"
+                          onClick={() => handleOpenEdit(item)}
+                        >
+                          Details bearbeiten
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="text-destructive rounded-none"
+                          onClick={() => item.id && handleDelete(item.id)}
+                        >
+                          Löschen
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </div>
 
-      <CreateCatalogItemSheet open={isSheetOpen} onOpenChange={setIsSheetOpen} />
+      <CreateCatalogItemSheet
+        open={isSheetOpen}
+        onOpenChange={setIsSheetOpen}
+        onSuccess={loadItems}
+        itemToEdit={editingItem}
+      />
     </div>
   );
 }

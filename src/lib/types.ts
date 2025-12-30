@@ -40,3 +40,15 @@ export interface Customer {
   note?: string;
   created_at?: string;
 }
+
+export interface CatalogItem {
+  id?: number;
+  user_id?: string;
+  name: string;
+  type: 'service' | 'product';
+  price: number;
+  currency: string;
+  unit: string;
+  tax_rate: number;
+  created_at?: string;
+}

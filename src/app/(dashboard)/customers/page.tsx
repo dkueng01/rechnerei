@@ -58,6 +58,7 @@ export default function CustomersPage() {
       await CustomerService.delete(user, id);
       loadCustomers();
     } catch (error) {
+      console.error(error);
     }
   };
 
