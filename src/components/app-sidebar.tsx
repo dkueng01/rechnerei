@@ -10,6 +10,7 @@ import {
   Package,
   ReceiptEuro,
   Send,
+  Settings,
 } from "lucide-react"
 
 import {
@@ -63,6 +64,11 @@ const data = {
       title: "Finances",
       url: "/finances",
       icon: Landmark,
+    },
+    {
+      title: "Settings",
+      url: "/settings",
+      icon: Settings,
     },
   ],
   navSecondary: [
