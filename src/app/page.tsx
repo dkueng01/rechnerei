@@ -11,6 +11,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { stackClientApp } from "@/stack/client";
+import Image from "next/image";
 
 export default function LandingPage() {
   const user = stackClientApp.useUser();
@@ -139,45 +140,8 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="relative max-w-5xl mx-auto border bg-neutral-950 p-2 shadow-2xl">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-blue-500 to-amber-500"></div>
-
-            <div className="h-12 border-b flex items-center px-4 gap-4 bg-background">
-              <div className="w-32 h-4 bg-muted animate-pulse"></div>
-              <div className="ml-auto flex gap-2">
-                <div className="w-8 h-8 border bg-muted/20"></div>
-                <div className="w-8 h-8 border bg-muted/20"></div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-4 gap-4 p-4 h-[400px]">
-              <div className="hidden md:block col-span-1 border bg-muted/5 p-4 space-y-3">
-                {[1, 2, 3, 4, 5, 6].map(i => (
-                  <div key={i} className="h-8 w-full bg-muted/20 border-l-2 border-transparent hover:border-primary hover:bg-muted/40 transition-all"></div>
-                ))}
-              </div>
-              <div className="col-span-4 md:col-span-3 space-y-4">
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="h-24 border bg-background p-4 space-y-2">
-                    <div className="w-8 h-8 bg-emerald-500/20"></div>
-                    <div className="w-16 h-4 bg-muted"></div>
-                  </div>
-                  <div className="h-24 border bg-background p-4 space-y-2">
-                    <div className="w-8 h-8 bg-blue-500/20"></div>
-                    <div className="w-16 h-4 bg-muted"></div>
-                  </div>
-                  <div className="h-24 border bg-background p-4 space-y-2">
-                    <div className="w-8 h-8 bg-amber-500/20"></div>
-                    <div className="w-16 h-4 bg-muted"></div>
-                  </div>
-                </div>
-                <div className="h-64 border bg-background relative overflow-hidden flex items-center justify-center">
-                  <span className="text-muted-foreground/20 font-mono text-4xl font-bold tracking-widest rotate-[-12deg]">
-                    DEIN DASHBOARD
-                  </span>
-                </div>
-              </div>
-            </div>
+          <div className="relative max-w-5xl mx-auto border p-2 shadow-2xl flex items-center justify-center">
+            <Image src="/preview1.png" alt="Preview" width={997} height={525} />
           </div>
         </div>
       </section>
