@@ -14,8 +14,6 @@ import {
   MoreHorizontal,
   Plus,
   Search,
-  FileText,
-  Download
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -26,8 +24,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useState } from "react";
-import { CreateInvoiceSheet } from "@/components/create-invoice-sheet";
 import { stackClientApp } from "@/stack/client";
+import { useRouter } from "next/navigation";
 
 // Mock Data
 const invoices = [
@@ -51,7 +49,7 @@ const invoices = [
 
 export default function InvoicesPage() {
   const user = stackClientApp.useUser({ or: 'redirect' });
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <div className="flex-1 space-y-2 p-2 py-6 min-h-screen flex flex-col">
@@ -68,7 +66,7 @@ export default function InvoicesPage() {
             className="pl-8"
           />
         </div>
-        <Button onClick={() => setIsSheetOpen(true)}>
+        <Button onClick={() => router.push('/invoices/create')}>
           <Plus className="mr-2 h-4 w-4" /> Neue Rechnung
         </Button>
       </div>
@@ -112,7 +110,7 @@ export default function InvoicesPage() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
-                      <DropdownMenuItem onClick={() => setIsSheetOpen(true)}>
+                      <DropdownMenuItem onClick={() => router.push(`/invoices/${inv.id}/edit`)}>
                         Bearbeiten
                       </DropdownMenuItem>
                       <DropdownMenuItem>PDF drucken</DropdownMenuItem>
@@ -125,8 +123,6 @@ export default function InvoicesPage() {
           </TableBody>
         </Table>
       </div>
-
-      <CreateInvoiceSheet open={isSheetOpen} onOpenChange={setIsSheetOpen} />
     </div>
   );
 }

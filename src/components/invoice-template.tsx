@@ -1,6 +1,3 @@
-import { cn } from "@/lib/utils";
-
-// Types (Same as before)
 export interface InvoiceItem {
   description: string;
   quantity: number;
@@ -36,10 +33,7 @@ export function InvoiceTemplate({ data }: { data: InvoiceData }) {
   const total = subtotal + taxAmount;
 
   return (
-    // MAIN WRAPPER: Fixed width for screen preview, Full width for print
     <div className="bg-white text-black p-[50px] w-[210mm] min-h-[297mm] mx-auto shadow-2xl print:shadow-none print:m-0 print:w-full font-mono text-sm leading-relaxed box-border">
-
-      {/* Header */}
       <header className="flex justify-between items-start mb-12">
         <div>
           <h1 className="text-xl font-bold mb-2">{data.sender.name}</h1>
@@ -51,7 +45,6 @@ export function InvoiceTemplate({ data }: { data: InvoiceData }) {
         </div>
       </header>
 
-      {/* Meta Data */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-4">Rechnung</h2>
         <div className="grid grid-cols-2 gap-x-8 gap-y-1 text-sm">
@@ -70,7 +63,6 @@ export function InvoiceTemplate({ data }: { data: InvoiceData }) {
         </div>
       </section>
 
-      {/* Recipient Address */}
       <section className="mb-12">
         <h3 className="text-xs uppercase tracking-wider text-neutral-400 border-b border-black pb-1 mb-2 w-full max-w-[300px]">Empfänger</h3>
         <div className="font-medium text-base">
@@ -81,7 +73,6 @@ export function InvoiceTemplate({ data }: { data: InvoiceData }) {
         </div>
       </section>
 
-      {/* Table */}
       <table className="w-full mb-8 border-collapse">
         <thead>
           <tr className="border-b border-black">
@@ -103,7 +94,6 @@ export function InvoiceTemplate({ data }: { data: InvoiceData }) {
         </tbody>
       </table>
 
-      {/* Totals */}
       <div className="flex flex-col items-end gap-2 mb-12">
         <div className="w-[250px] flex justify-between text-sm">
           <span>Netto</span>
@@ -123,7 +113,6 @@ export function InvoiceTemplate({ data }: { data: InvoiceData }) {
         </div>
       </div>
 
-      {/* Legal & Footer */}
       <div className="mt-auto pt-8 border-t border-dashed border-neutral-300 text-xs text-neutral-500">
         <p className="mb-4">
           {data.isSmallBusiness
