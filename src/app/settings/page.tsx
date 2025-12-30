@@ -33,6 +33,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UploadButton } from "@/utils/uploadthing";
 import { CompanySettings } from "@/lib/types";
 import { CompanySettingsService } from "@/services/company-settings-service";
+import { deleteFile } from "../actions/delete-file";
 
 const initialSettings: CompanySettings = {
   company_name: "",
@@ -174,9 +175,28 @@ export default function SettingsPage() {
 
                       return files;
                     }}
-                    onClientUploadComplete={(res) => {
+                    onClientUploadComplete={async (res) => {
                       if (res?.[0]) {
-                        updateField("logo_url", res[0].url);
+                        const newUrl = res[0].url;
+                        const oldUrl = formData.logo_url;
+
+                        if (!user) return;
+
+                        try {
+                          await CompanySettingsService.upsert(user, {
+                            logo_url: newUrl
+                          });
+
+                          if (oldUrl && oldUrl !== newUrl) {
+                            await deleteFile(oldUrl);
+                          }
+
+                          updateField("logo_url", newUrl);
+
+                        } catch (error) {
+                          console.error("Failed to save logo to DB", error);
+                          await deleteFile(newUrl);
+                        }
                       }
                     }}
                     appearance={{
