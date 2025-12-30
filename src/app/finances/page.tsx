@@ -69,22 +69,22 @@ export default function FinancesPage() {
     <div className="flex-1 space-y-2 p-2 py-6 min-h-screen flex flex-col">
       <div className="flex items-center space-y-2 gap-2">
         <SidebarTrigger className="m-0" />
-        <h2 className="text-xl font-bold tracking-tight">Finances</h2>
+        <h2 className="text-xl font-bold tracking-tight">Finanzen</h2>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3 pt-4">
         <div className="border p-4 bg-background flex flex-col justify-between space-y-2">
-          <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Net Income (Month)</span>
+          <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Nettoergebnis (Monat)</span>
           <div className="text-2xl font-mono font-bold">€ 1,268.51</div>
         </div>
         <div className="border p-4 bg-background flex flex-col justify-between space-y-2">
-          <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Total Income</span>
+          <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Einnahmen</span>
           <div className="text-2xl font-mono font-bold text-emerald-500 flex items-center gap-2">
             <ArrowUpRight className="h-5 w-5" /> € 1,380.00
           </div>
         </div>
         <div className="border p-4 bg-background flex flex-col justify-between space-y-2">
-          <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Total Expenses</span>
+          <span className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Ausgaben</span>
           <div className="text-2xl font-mono font-bold text-rose-500 flex items-center gap-2">
             <ArrowDownRight className="h-5 w-5" /> € 111.49
           </div>
@@ -95,12 +95,12 @@ export default function FinancesPage() {
         <div className="relative w-full max-w-sm">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search transactions..."
+            placeholder="Transaktionen suchen..."
             className="pl-8 rounded-none"
           />
         </div>
         <Button onClick={() => setIsSheetOpen(true)} className="rounded-none">
-          <Plus className="mr-2 h-4 w-4" /> Add Transaction
+          <Plus className="mr-2 h-4 w-4" /> Transaktion hinzufügen
         </Button>
       </div>
 
@@ -108,12 +108,12 @@ export default function FinancesPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Date</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Receipt</TableHead>
-              <TableHead className="text-right">Amount</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>Datum</TableHead>
+              <TableHead>Beschreibung</TableHead>
+              <TableHead>Kategorie</TableHead>
+              <TableHead>Beleg</TableHead>
+              <TableHead className="text-right">Betrag</TableHead>
+              <TableHead className="text-right">Aktionen</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -123,7 +123,7 @@ export default function FinancesPage() {
                 <TableCell className="font-medium">{tx.description}</TableCell>
                 <TableCell>
                   <span className="inline-flex items-center border px-2 py-0.5 text-xs text-muted-foreground uppercase tracking-wide">
-                    {tx.category}
+                    {tx.category === 'Subscription' ? 'Abo' : tx.category === 'Sales' ? 'Verkauf' : tx.category === 'Office' ? 'Büro' : tx.category}
                   </span>
                 </TableCell>
                 <TableCell>
@@ -143,15 +143,15 @@ export default function FinancesPage() {
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" className="h-8 w-8 p-0 rounded-none">
-                        <span className="sr-only">Open menu</span>
+                        <span className="sr-only">Menü öffnen</span>
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="rounded-none">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem className="rounded-none">Edit</DropdownMenuItem>
-                      <DropdownMenuItem className="rounded-none">View Receipt</DropdownMenuItem>
-                      <DropdownMenuItem className="text-destructive rounded-none">Delete</DropdownMenuItem>
+                      <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
+                      <DropdownMenuItem className="rounded-none">Bearbeiten</DropdownMenuItem>
+                      <DropdownMenuItem className="rounded-none">Beleg anzeigen</DropdownMenuItem>
+                      <DropdownMenuItem className="text-destructive rounded-none">Löschen</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>

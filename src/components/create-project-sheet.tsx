@@ -32,9 +32,9 @@ export function CreateProjectSheet({ open, onOpenChange }: CreateProjectSheetPro
         className="w-[400px] sm:w-[540px] p-0 h-full flex flex-col"
       >
         <SheetHeader className="p-4 border-b shrink-0 text-left">
-          <SheetTitle>Create Project</SheetTitle>
+          <SheetTitle>Projekt erstellen</SheetTitle>
           <SheetDescription>
-            Create a new project to track time and generate invoices.
+            Erstellen Sie ein neues Projekt für Zeiterfassung und Rechnungen.
           </SheetDescription>
         </SheetHeader>
 
@@ -44,50 +44,50 @@ export function CreateProjectSheet({ open, onOpenChange }: CreateProjectSheetPro
             <div className="space-y-1">
               <Label htmlFor="name" className="text-xs">Name</Label>
               <Input id="name" placeholder="100 Jahre Party" />
-              <p className="text-[10px] text-muted-foreground">This is the project display name.</p>
+              <p className="text-[10px] text-muted-foreground">Der Anzeigename des Projekts.</p>
             </div>
 
             <div className="space-y-1">
-              <Label className="text-xs">Customer</Label>
+              <Label className="text-xs">Kunde</Label>
               <Select>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select customer" />
+                  <SelectValue placeholder="Kunde wählen" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="raggal">Feuerwehr Raggal</SelectItem>
                   <SelectItem value="acme">Acme Inc</SelectItem>
                 </SelectContent>
               </Select>
-              <p className="text-[10px] text-muted-foreground">Link a customer to enable direct invoicing.</p>
+              <p className="text-[10px] text-muted-foreground">Kunden für direkte Verrechnung verknüpfen.</p>
             </div>
 
             <div className="space-y-1">
-              <Label className="text-xs">Expense Tags</Label>
+              <Label className="text-xs">Ausgaben-Tags</Label>
               <Select>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select tags" />
+                  <SelectValue placeholder="Tags wählen" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="design">Design</SelectItem>
-                  <SelectItem value="development">Development</SelectItem>
-                  <SelectItem value="planning">Planning</SelectItem>
+                  <SelectItem value="development">Entwicklung</SelectItem>
+                  <SelectItem value="planning">Planung</SelectItem>
                 </SelectContent>
               </Select>
-              <p className="text-[10px] text-muted-foreground">Tags help categorize and track project expenses.</p>
+              <p className="text-[10px] text-muted-foreground">Tags kategorisieren Projektausgaben.</p>
             </div>
 
             <div className="space-y-1">
-              <Label htmlFor="description" className="text-xs">Description</Label>
+              <Label htmlFor="description" className="text-xs">Beschreibung</Label>
               <Textarea
                 id="description"
-                placeholder="Add a short description about the project."
+                placeholder="Kurzbeschreibung des Projekts hinzufügen."
                 className="min-h-[100px]"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <Label htmlFor="estimate" className="text-xs">Time Estimate (Hours)</Label>
+                <Label htmlFor="estimate" className="text-xs">Zeit-Schätzung (Stunden)</Label>
                 <Input id="estimate" type="number" placeholder="0" />
               </div>
               <div className="space-y-1">
@@ -97,9 +97,9 @@ export function CreateProjectSheet({ open, onOpenChange }: CreateProjectSheetPro
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="progress">In Progress</SelectItem>
-                    <SelectItem value="completed">Completed</SelectItem>
-                    <SelectItem value="hold">On Hold</SelectItem>
+                    <SelectItem value="progress">In Arbeit</SelectItem>
+                    <SelectItem value="completed">Abgeschlossen</SelectItem>
+                    <SelectItem value="hold">Pausiert</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -107,14 +107,14 @@ export function CreateProjectSheet({ open, onOpenChange }: CreateProjectSheetPro
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <Label htmlFor="rate" className="text-xs">Hourly Rate</Label>
+                <Label htmlFor="rate" className="text-xs">Stundensatz</Label>
                 <Input id="rate" type="number" placeholder="0.00" />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">Currency</Label>
+                <Label className="text-xs">Währung</Label>
                 <Select defaultValue="eur">
                   <SelectTrigger>
-                    <SelectValue placeholder="Currency" />
+                    <SelectValue placeholder="Währung" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="eur">EUR</SelectItem>
@@ -132,14 +132,14 @@ export function CreateProjectSheet({ open, onOpenChange }: CreateProjectSheetPro
             variant="ghost"
             onClick={() => onOpenChange(false)}
           >
-            Cancel
+            Abbrechen
           </Button>
           <Button
             onClick={() => {
               onOpenChange(false);
             }}
           >
-            Create Project
+            Projekt erstellen
           </Button>
         </SheetFooter>
 

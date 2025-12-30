@@ -57,19 +57,19 @@ export default function InvoicesPage() {
     <div className="flex-1 space-y-2 p-2 py-6 min-h-screen flex flex-col">
       <div className="flex items-center space-y-2 gap-2">
         <SidebarTrigger className="m-0" />
-        <h2 className="text-xl font-bold tracking-tight">Invoices</h2>
+        <h2 className="text-xl font-bold tracking-tight">Rechnungen</h2>
       </div>
 
       <div className="flex items-center justify-between gap-4 py-4">
         <div className="relative w-full max-w-sm">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search invoices..."
+            placeholder="Rechnungen suchen..."
             className="pl-8"
           />
         </div>
         <Button onClick={() => setIsSheetOpen(true)}>
-          <Plus className="mr-2 h-4 w-4" /> Create Invoice
+          <Plus className="mr-2 h-4 w-4" /> Neue Rechnung
         </Button>
       </div>
 
@@ -77,12 +77,12 @@ export default function InvoicesPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Invoice No.</TableHead>
-              <TableHead>Recipient</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Amount</TableHead>
+              <TableHead>Rechnungs-Nr.</TableHead>
+              <TableHead>Empfänger</TableHead>
+              <TableHead>Datum</TableHead>
+              <TableHead>Betrag</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="text-right">Aktionen</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -99,24 +99,24 @@ export default function InvoicesPage() {
                         inline-flex items-center border px-2.5 py-0.5 text-xs font-semibold transition-colors
                         ${inv.status === 'Sent' ? 'bg-primary/10 text-primary border-primary/20' : 'bg-muted text-muted-foreground'}
                     `}>
-                    {inv.status}
+                    {inv.status === 'Sent' ? 'Versendet' : 'Entwurf'}
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" className="h-8 w-8 p-0">
-                        <span className="sr-only">Open menu</span>
+                        <span className="sr-only">Menü öffnen</span>
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                      <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
                       <DropdownMenuItem onClick={() => setIsSheetOpen(true)}>
-                        Edit
+                        Bearbeiten
                       </DropdownMenuItem>
-                      <DropdownMenuItem>Print PDF</DropdownMenuItem>
-                      <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+                      <DropdownMenuItem>PDF drucken</DropdownMenuItem>
+                      <DropdownMenuItem className="text-destructive">Löschen</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>

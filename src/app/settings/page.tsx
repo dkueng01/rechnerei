@@ -40,9 +40,9 @@ export default function SettingsPage() {
       <div className="flex items-center space-y-2 gap-2 mb-6">
         <SidebarTrigger className="m-0" />
         <div className="flex flex-col">
-          <h2 className="text-xl font-bold tracking-tight">Settings</h2>
+          <h2 className="text-xl font-bold tracking-tight">Einstellungen</h2>
           <p className="text-xs text-muted-foreground">
-            Manage your company details and invoice configurations.
+            Verwalten Sie Ihre Unternehmensdaten und Rechnungsoptionen.
           </p>
         </div>
       </div>
@@ -55,7 +55,7 @@ export default function SettingsPage() {
           >
             <div className="flex items-center gap-2">
               <Building2 className="h-4 w-4" />
-              General
+              Allgemein
             </div>
           </TabsTrigger>
           <TabsTrigger
@@ -64,7 +64,7 @@ export default function SettingsPage() {
           >
             <div className="flex items-center gap-2">
               <Gavel className="h-4 w-4" />
-              Legal & Tax
+              Recht & Steuern
             </div>
           </TabsTrigger>
           <TabsTrigger
@@ -73,7 +73,7 @@ export default function SettingsPage() {
           >
             <div className="flex items-center gap-2">
               <Wallet className="h-4 w-4" />
-              Bank & Contact
+              Bank & Kontakt
             </div>
           </TabsTrigger>
         </TabsList>
@@ -84,8 +84,8 @@ export default function SettingsPage() {
             {/* Logo Section */}
             <Card className="rounded-none lg:col-span-1">
               <CardHeader>
-                <CardTitle>Company Logo</CardTitle>
-                <CardDescription>Used on invoices and in the app header.</CardDescription>
+                <CardTitle>Firmenlogo</CardTitle>
+                <CardDescription>Wird auf Rechnungen und im App-Header verwendet.</CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col items-center justify-center space-y-4">
                 <Avatar className="h-32 w-32 border-2 border-muted">
@@ -93,7 +93,7 @@ export default function SettingsPage() {
                   <AvatarFallback className="text-2xl bg-muted">CN</AvatarFallback>
                 </Avatar>
                 <Button variant="outline" className="rounded-none w-full">
-                  <Upload className="mr-2 h-4 w-4" /> Upload New
+                  <Upload className="mr-2 h-4 w-4" /> Neues hochladen
                 </Button>
               </CardContent>
             </Card>
@@ -101,26 +101,26 @@ export default function SettingsPage() {
             {/* Basic Info Section */}
             <Card className="rounded-none lg:col-span-2">
               <CardHeader>
-                <CardTitle>Company Details</CardTitle>
-                <CardDescription>Your public business information.</CardDescription>
+                <CardTitle>Unternehmensdetails</CardTitle>
+                <CardDescription>Ihre öffentlichen Unternehmensdaten.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-1">
-                  <Label>Company Name</Label>
+                  <Label>Firmenname</Label>
                   <Input defaultValue="Muster Design e.U." className="rounded-none" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <Label>First Name</Label>
+                    <Label>Vorname</Label>
                     <Input defaultValue="Max" className="rounded-none" />
                   </div>
                   <div className="space-y-1">
-                    <Label>Last Name</Label>
+                    <Label>Nachname</Label>
                     <Input defaultValue="Mustermann" className="rounded-none" />
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <Label>Address</Label>
+                  <Label>Adresse</Label>
                   <Textarea defaultValue="Musterstraße 12&#10;1010 Wien" className="rounded-none min-h-[80px]" />
                 </div>
               </CardContent>
@@ -132,17 +132,17 @@ export default function SettingsPage() {
         <TabsContent value="legal" className="space-y-4">
           <Card className="rounded-none">
             <CardHeader>
-              <CardTitle>Legal Information</CardTitle>
-              <CardDescription>Defines how your invoices are legally structured.</CardDescription>
+              <CardTitle>Rechtliche Informationen</CardTitle>
+              <CardDescription>Definiert die rechtliche Struktur Ihrer Rechnungen.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-1">
-                  <Label>Legal Form (Rechtsform)</Label>
+                  <Label>Rechtsform</Label>
                   <Select defaultValue="eu">
                     <SelectTrigger className="rounded-none">
-                      <SelectValue placeholder="Select Legal Form" />
+                      <SelectValue placeholder="Rechtsform wählen" />
                     </SelectTrigger>
                     <SelectContent className="rounded-none">
                       <SelectItem value="eu">Einzelunternehmen (e.U.)</SelectItem>
@@ -155,23 +155,23 @@ export default function SettingsPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <Label>Commercial Register No. (FN)</Label>
-                  <Input placeholder="e.g. FN 123456 x" className="rounded-none" />
-                  <p className="text-[10px] text-muted-foreground">Optional if not registered.</p>
+                  <Label>Firmenbuchnummer (FN)</Label>
+                  <Input placeholder="z.B. FN 123456 x" className="rounded-none" />
+                  <p className="text-[10px] text-muted-foreground">Optional falls nicht registriert.</p>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <Label>Registration Court (Firmenbuchgericht)</Label>
-                <Input placeholder="e.g. Handelsgericht Wien" className="rounded-none" />
+                <Label>Firmenbuchgericht</Label>
+                <Input placeholder="z.B. Handelsgericht Wien" className="rounded-none" />
               </div>
 
               <div className="border-t pt-6">
                 <div className="flex flex-row items-center justify-between rounded-none border p-4">
                   <div className="space-y-0.5">
-                    <Label className="text-base">Small Business Regulation (Kleinunternehmer)</Label>
+                    <Label className="text-base">Kleinunternehmer-Regelung</Label>
                     <div className="text-xs text-muted-foreground">
-                      Check this if you are exempt from VAT under §6 Abs.1 Z27 UStG.
+                      Aktivieren, wenn Sie gemäß §6 Abs.1 Z27 UStG umsatzsteuerbefreit sind.
                     </div>
                   </div>
                   <Switch
@@ -183,11 +183,11 @@ export default function SettingsPage() {
                 {!isSmallBusiness && (
                   <div className="mt-4 grid md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-top-2">
                     <div className="space-y-1">
-                      <Label>VAT ID (UID-Nummer)</Label>
+                      <Label>UID-Nummer</Label>
                       <Input placeholder="ATU..." className="rounded-none" />
                     </div>
                     <div className="space-y-1">
-                      <Label>Default Tax Rate (%)</Label>
+                      <Label>Standard-Steuersatz (%)</Label>
                       <Input type="number" defaultValue="20" className="rounded-none" />
                     </div>
                   </div>
@@ -203,13 +203,13 @@ export default function SettingsPage() {
           <div className="grid gap-4 md:grid-cols-2">
             <Card className="rounded-none">
               <CardHeader>
-                <CardTitle>Bank Details</CardTitle>
-                <CardDescription>Displayed on invoices for payment.</CardDescription>
+                <CardTitle>Bankverbindung</CardTitle>
+                <CardDescription>Wird auf Rechnungen für Zahlungen angezeigt.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-1">
-                  <Label>Bank Name</Label>
-                  <Input placeholder="e.g. Erste Bank" className="rounded-none" />
+                  <Label>Bankname</Label>
+                  <Input placeholder="z.B. Erste Bank" className="rounded-none" />
                 </div>
                 <div className="space-y-1">
                   <Label>IBAN</Label>
@@ -220,7 +220,7 @@ export default function SettingsPage() {
                   <Input placeholder="BANKATWW" className="rounded-none" />
                 </div>
                 <div className="space-y-1">
-                  <Label>Account Holder</Label>
+                  <Label>Kontoinhaber</Label>
                   <Input placeholder="Max Mustermann" className="rounded-none" />
                 </div>
               </CardContent>
@@ -228,20 +228,20 @@ export default function SettingsPage() {
 
             <Card className="rounded-none">
               <CardHeader>
-                <CardTitle>Contact Information</CardTitle>
-                <CardDescription>How customers can reach you.</CardDescription>
+                <CardTitle>Kontaktinformationen</CardTitle>
+                <CardDescription>Wie Kunden Sie erreichen können.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-1">
-                  <Label>Email Address</Label>
+                  <Label>E-Mail Adresse</Label>
                   <Input type="email" defaultValue="office@musterdesign.at" className="rounded-none" />
                 </div>
                 <div className="space-y-1">
-                  <Label>Phone Number</Label>
+                  <Label>Telefonnummer</Label>
                   <Input type="tel" defaultValue="+43 660 12345678" className="rounded-none" />
                 </div>
                 <div className="space-y-1">
-                  <Label>Website</Label>
+                  <Label>Webseite</Label>
                   <Input defaultValue="www.musterdesign.at" className="rounded-none" />
                 </div>
               </CardContent>
@@ -252,7 +252,7 @@ export default function SettingsPage() {
         {/* Sticky Save Bar */}
         <div className="flex justify-end pt-4">
           <Button className="rounded-none min-w-[150px]">
-            <Save className="mr-2 h-4 w-4" /> Save Changes
+            <Save className="mr-2 h-4 w-4" /> Änderungen speichern
           </Button>
         </div>
 

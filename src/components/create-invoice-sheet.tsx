@@ -82,7 +82,7 @@ export function CreateInvoiceSheet({ open, onOpenChange }: CreateInvoiceSheetPro
         className="w-[400px] sm:w-[600px] p-0 h-full flex flex-col"
       >
         <SheetHeader className="p-4 border-b shrink-0 flex flex-row items-center justify-between">
-          <SheetTitle>Edit Invoice</SheetTitle>
+          <SheetTitle>Rechnung bearbeiten</SheetTitle>
         </SheetHeader>
 
         <div style={{ display: "none" }}>
@@ -95,7 +95,7 @@ export function CreateInvoiceSheet({ open, onOpenChange }: CreateInvoiceSheetPro
           <Tabs defaultValue="details">
             <TabsList className="w-full mb-6 rounded-none">
               <TabsTrigger value="details" className="flex-1 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-b-primary">Details</TabsTrigger>
-              <TabsTrigger value="items" className="flex-1 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-b-primary">Items</TabsTrigger>
+              <TabsTrigger value="items" className="flex-1 rounded-none data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-b-primary">Positionen</TabsTrigger>
             </TabsList>
 
             <TabsContent value="details" className="space-y-4 mt-0">
@@ -167,13 +167,13 @@ export function CreateInvoiceSheet({ open, onOpenChange }: CreateInvoiceSheetPro
 
         <SheetFooter className="p-4 border-t bg-background shrink-0 flex flex-row justify-end gap-2">
           <Button variant="ghost" className="rounded-none" onClick={() => onOpenChange(false)}>
-            Cancel
+            Abbrechen
           </Button>
           <Button variant="default" className="rounded-none" onClick={() => handlePrint()}>
-            <Printer className="w-4 h-4 mr-2" /> Print PDF
+            <Printer className="w-4 h-4 mr-2" /> PDF drucken
           </Button>
           <Button variant="outline" className="rounded-none">
-            <Save className="w-4 h-4 mr-2" /> Save Draft
+            <Save className="w-4 h-4 mr-2" /> Entwurf speichern
           </Button>
         </SheetFooter>
 

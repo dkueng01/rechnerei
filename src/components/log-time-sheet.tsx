@@ -44,10 +44,10 @@ export function LogTimeSheet({ open, onOpenChange }: LogTimeSheetProps) {
         <SheetHeader className="p-4 border-b shrink-0 text-left">
           <SheetTitle className="flex items-center gap-2">
             <Clock className="h-5 w-5" />
-            Log Time
+            Zeit erfassen
           </SheetTitle>
           <SheetDescription>
-            Record work hours and services for a project.
+            Arbeitszeit oder Leistungen für ein Projekt erfassen.
           </SheetDescription>
         </SheetHeader>
 
@@ -55,10 +55,10 @@ export function LogTimeSheet({ open, onOpenChange }: LogTimeSheetProps) {
           <div className="space-y-2">
 
             <div className="space-y-1">
-              <Label className="text-xs">Project</Label>
+              <Label className="text-xs">Projekt</Label>
               <Select>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select project" />
+                  <SelectValue placeholder="Projekt wählen" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="party">100 Jahre Party</SelectItem>
@@ -68,24 +68,24 @@ export function LogTimeSheet({ open, onOpenChange }: LogTimeSheetProps) {
             </div>
 
             <div className="space-y-1">
-              <Label className="text-xs">Service / Activity</Label>
+              <Label className="text-xs">Leistung / Aktivität</Label>
               <Select>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select service" />
+                  <SelectValue placeholder="Leistung wählen" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="editing">Photo Editing (€80.00/h)</SelectItem>
-                  <SelectItem value="shooting">Photography (€120.00/h)</SelectItem>
-                  <SelectItem value="consulting">Consulting (€100.00/h)</SelectItem>
+                  <SelectItem value="editing">Bildbearbeitung (€80.00/h)</SelectItem>
+                  <SelectItem value="shooting">Fotografie (€120.00/h)</SelectItem>
+                  <SelectItem value="consulting">Beratung (€100.00/h)</SelectItem>
                 </SelectContent>
               </Select>
               <p className="text-[10px] text-muted-foreground">
-                Determines the hourly rate for this entry.
+                Bestimmt den Stundensatz für diesen Eintrag.
               </p>
             </div>
 
             <div className="space-y-1">
-              <Label className="text-xs">Date</Label>
+              <Label className="text-xs">Datum</Label>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
@@ -96,7 +96,7 @@ export function LogTimeSheet({ open, onOpenChange }: LogTimeSheetProps) {
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {date ? format(date, "PPP") : <span>Pick a date</span>}
+                    {date ? format(date, "PPP") : <span>Datum wählen</span>}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
@@ -111,31 +111,31 @@ export function LogTimeSheet({ open, onOpenChange }: LogTimeSheetProps) {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <Label htmlFor="startTime" className="text-xs">Start Time</Label>
+                <Label htmlFor="startTime" className="text-xs">Startzeit</Label>
                 <Input id="startTime" type="time" defaultValue="09:00" />
               </div>
               <div className="space-y-1">
-                <Label htmlFor="endTime" className="text-xs">End Time</Label>
+                <Label htmlFor="endTime" className="text-xs">Endzeit</Label>
                 <Input id="endTime" type="time" defaultValue="13:00" />
               </div>
             </div>
 
             <div className="rounded-md bg-muted/50 p-3 flex items-center justify-between border">
               <div className="text-left">
-                <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Total Time</div>
+                <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Gesamtzeit</div>
                 <div className="text-xl font-bold font-mono">4h 00m</div>
               </div>
               <div className="text-right">
-                <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Est. Amount</div>
+                <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Betrag (geschätzt)</div>
                 <div className="text-xl font-bold font-mono">€320.00</div>
               </div>
             </div>
 
             <div className="space-y-1">
-              <Label htmlFor="description" className="text-xs">Description</Label>
+              <Label htmlFor="description" className="text-xs">Beschreibung</Label>
               <Textarea
                 id="description"
-                placeholder="What did you work on?"
+                placeholder="Woran haben Sie gearbeitet?"
                 className="min-h-[100px]"
               />
             </div>
@@ -146,10 +146,10 @@ export function LogTimeSheet({ open, onOpenChange }: LogTimeSheetProps) {
                   htmlFor="billable"
                   className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Mark as Billable
+                  Verrechenbar
                 </label>
                 <p className="text-[10px] text-muted-foreground">
-                  Include this in the invoice.
+                  Auf der Rechnung anführen.
                 </p>
               </div>
               <Switch />
@@ -163,14 +163,14 @@ export function LogTimeSheet({ open, onOpenChange }: LogTimeSheetProps) {
             variant="ghost"
             onClick={() => onOpenChange(false)}
           >
-            Cancel
+            Abbrechen
           </Button>
           <Button
             onClick={() => {
               onOpenChange(false);
             }}
           >
-            Log Time
+            Speichern
           </Button>
         </SheetFooter>
 

@@ -45,19 +45,19 @@ export default function CustomersPage() {
     <div className="flex-1 space-y-2 p-2 py-6 min-h-screen">
       <div className="flex items-center items-center space-y-2 gap-2">
         <SidebarTrigger className="m-0" />
-        <h2 className="text-xl font-bold tracking-tight">Customers</h2>
+        <h2 className="text-xl font-bold tracking-tight">Kunden</h2>
       </div>
 
       <div className="flex items-center justify-between gap-4 py-4">
         <div className="relative w-full max-w-sm">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search customers..."
+            placeholder="Kunden suchen..."
             className="pl-8"
           />
         </div>
         <Button onClick={() => setIsSheetOpen(true)}>
-          <Plus className="mr-2 h-4 w-4" /> Add Customer
+          <Plus className="mr-2 h-4 w-4" /> Kunde hinzufügen
         </Button>
       </div>
 
@@ -66,12 +66,12 @@ export default function CustomersPage() {
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Contact person</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Invoices</TableHead>
-              <TableHead>Projects</TableHead>
+              <TableHead>Ansprechperson</TableHead>
+              <TableHead>E-Mail</TableHead>
+              <TableHead>Rechnungen</TableHead>
+              <TableHead>Projekte</TableHead>
               <TableHead>Tags</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="text-right">Aktionen</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -95,15 +95,15 @@ export default function CustomersPage() {
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" className="h-8 w-8 p-0">
-                        <span className="sr-only">Open menu</span>
+                        <span className="sr-only">Menü öffnen</span>
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem>Edit details</DropdownMenuItem>
-                      <DropdownMenuItem>Create Invoice</DropdownMenuItem>
-                      <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+                      <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
+                      <DropdownMenuItem>Details bearbeiten</DropdownMenuItem>
+                      <DropdownMenuItem>Rechnung erstellen</DropdownMenuItem>
+                      <DropdownMenuItem className="text-destructive">Löschen</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>

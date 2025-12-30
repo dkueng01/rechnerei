@@ -29,7 +29,7 @@ export default function TimeTrackingPage() {
     <div className="flex-1 space-y-2 p-2 py-6 min-h-screen flex flex-col">
       <div className="flex items-center space-y-2 gap-2">
         <SidebarTrigger className="m-0" />
-        <h2 className="text-xl font-bold tracking-tight">Time Tracking</h2>
+        <h2 className="text-xl font-bold tracking-tight">Zeiterfassung</h2>
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-4 py-4">
@@ -46,20 +46,20 @@ export default function TimeTrackingPage() {
 
           <div className="flex items-center gap-3 border-l pl-4 h-10">
             <h3 className="text-xl font-mono">0h 0m</h3>
-            <span className="text-xs text-muted-foreground hidden sm:inline-block">Tracked this month</span>
+            <span className="text-xs text-muted-foreground hidden sm:inline-block">Diesen Monat erfasst</span>
           </div>
         </div>
 
         <div className="flex items-center gap-2 ml-auto sm:ml-0">
           <Tabs defaultValue="month">
             <TabsList className="h-10">
-              <TabsTrigger value="week">Week</TabsTrigger>
-              <TabsTrigger value="month">Month</TabsTrigger>
+              <TabsTrigger value="week">Woche</TabsTrigger>
+              <TabsTrigger value="month">Monat</TabsTrigger>
             </TabsList>
           </Tabs>
 
           <Button onClick={() => setIsLogTimeOpen(true)}>
-            <Plus className="mr-2 h-4 w-4" /> Log Time
+            <Plus className="mr-2 h-4 w-4" /> Zeit erfassen
           </Button>
         </div>
       </div>
@@ -68,7 +68,7 @@ export default function TimeTrackingPage() {
         <div className="overflow-x-auto flex-1 flex flex-col">
           <div className="min-w-[600px] flex-1 flex flex-col">
             <div className="grid grid-cols-7 border-b bg-muted/20">
-              {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+              {["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"].map((day) => (
                 <div key={day} className="p-2 text-xs text-muted-foreground text-center border-r last:border-r-0">
                   {day}
                 </div>

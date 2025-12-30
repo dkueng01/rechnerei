@@ -44,19 +44,19 @@ export default function CatalogPage() {
     <div className="flex-1 space-y-2 p-2 py-6 min-h-screen flex flex-col">
       <div className="flex items-center space-y-2 gap-2">
         <SidebarTrigger className="m-0" />
-        <h2 className="text-xl font-bold tracking-tight">Catalog</h2>
+        <h2 className="text-xl font-bold tracking-tight">Katalog</h2>
       </div>
 
       <div className="flex items-center justify-between gap-4 py-4">
         <div className="relative w-full max-w-sm">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search items..."
+            placeholder="Elemente suchen..."
             className="pl-8"
           />
         </div>
         <Button onClick={() => setIsSheetOpen(true)}>
-          <Plus className="mr-2 h-4 w-4" /> Add Item
+          <Plus className="mr-2 h-4 w-4" /> Element hinzufügen
         </Button>
       </div>
 
@@ -64,11 +64,11 @@ export default function CatalogPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Item Name</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Rate / Price</TableHead>
-              <TableHead>Unit</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>Bezeichnung</TableHead>
+              <TableHead>Typ</TableHead>
+              <TableHead>Preis</TableHead>
+              <TableHead>Einheit</TableHead>
+              <TableHead className="text-right">Aktionen</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -80,12 +80,12 @@ export default function CatalogPage() {
                     {item.type === 'service' ? (
                       <>
                         <Clock className="h-3 w-3" />
-                        <span>Service</span>
+                        <span>Dienstleistung</span>
                       </>
                     ) : (
                       <>
                         <Package className="h-3 w-3" />
-                        <span>Product</span>
+                        <span>Produkt</span>
                       </>
                     )}
                   </div>
@@ -96,14 +96,14 @@ export default function CatalogPage() {
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" className="h-8 w-8 p-0">
-                        <span className="sr-only">Open menu</span>
+                        <span className="sr-only">Menü öffnen</span>
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem>Edit details</DropdownMenuItem>
-                      <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+                      <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
+                      <DropdownMenuItem>Details bearbeiten</DropdownMenuItem>
+                      <DropdownMenuItem className="text-destructive">Löschen</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>

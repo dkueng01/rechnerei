@@ -30,9 +30,9 @@ export function CreateCustomerSheet({ open, onOpenChange }: CreateCustomerSheetP
       <SheetContent className="w-[400px] sm:w-[540px] p-0 flex flex-col h-full">
 
         <SheetHeader className="p-4 border-b shrink-0">
-          <SheetTitle>Create Customer</SheetTitle>
+          <SheetTitle>Kunden anlegen</SheetTitle>
           <SheetDescription>
-            Add a new customer to manage invoices and time tracking.
+            Fügen Sie einen neuen Kunden hinzu, um Rechnungen und Zeiterfassung zu verwalten.
           </SheetDescription>
         </SheetHeader>
 
@@ -40,7 +40,7 @@ export function CreateCustomerSheet({ open, onOpenChange }: CreateCustomerSheetP
           <div className="space-y-6">
 
             <div className="space-y-2">
-              <h3 className="text-sm font-medium">General</h3>
+              <h3 className="text-sm font-medium">Allgemein</h3>
 
               <div className="space-y-1">
                 <Label htmlFor="name" className="text-xs">Name</Label>
@@ -48,29 +48,29 @@ export function CreateCustomerSheet({ open, onOpenChange }: CreateCustomerSheetP
               </div>
 
               <div className="space-y-1">
-                <Label htmlFor="email" className="text-xs">Email</Label>
-                <Input id="email" type="email" placeholder="acme@example.com" />
+                <Label htmlFor="email" className="text-xs">E-Mail</Label>
+                <Input id="email" type="email" placeholder="acme@beispiel.com" />
               </div>
 
               <div className="space-y-1">
-                <Label htmlFor="billingEmail" className="text-xs">Billing Email</Label>
-                <Input id="billingEmail" type="email" placeholder="finance@example.com" />
-                <p className="text-[10px] text-muted-foreground">This is an additional email that will be used to send invoices to.</p>
+                <Label htmlFor="billingEmail" className="text-xs">Rechnungs-E-Mail</Label>
+                <Input id="billingEmail" type="email" placeholder="buchhaltung@beispiel.com" />
+                <p className="text-[10px] text-muted-foreground">Zusätzliche E-Mail für den Rechnungsversand.</p>
               </div>
 
               <div className="space-y-1">
-                <Label htmlFor="phone" className="text-xs">Phone</Label>
-                <Input id="phone" placeholder="+1 (555) 123-4567" />
+                <Label htmlFor="phone" className="text-xs">Telefon</Label>
+                <Input id="phone" placeholder="+43 1 1234567" />
               </div>
 
               <div className="space-y-1">
-                <Label htmlFor="website" className="text-xs">Website</Label>
+                <Label htmlFor="website" className="text-xs">Webseite</Label>
                 <Input id="website" placeholder="acme.com" />
               </div>
 
               <div className="space-y-1">
-                <Label htmlFor="contactPerson" className="text-xs">Contact person</Label>
-                <Input id="contactPerson" placeholder="John Doe" />
+                <Label htmlFor="contactPerson" className="text-xs">Kontaktperson</Label>
+                <Input id="contactPerson" placeholder="Max Mustermann" />
               </div>
             </div>
 
@@ -80,73 +80,74 @@ export function CreateCustomerSheet({ open, onOpenChange }: CreateCustomerSheetP
               <h3 className="text-sm font-medium">Details</h3>
 
               <div className="space-y-1">
-                <Label className="text-xs">Search for an address</Label>
-                <Input placeholder="Search..." />
+                <Label className="text-xs">Adresse suchen</Label>
+                <Input placeholder="Suchen..." />
               </div>
 
               <div className="space-y-1">
-                <Label htmlFor="address1" className="text-xs">Address Line 1</Label>
-                <Input id="address1" placeholder="123 Main St" />
+                <Label htmlFor="address1" className="text-xs">Adresse Zeile 1</Label>
+                <Input id="address1" placeholder="Musterstraße 1" />
               </div>
 
               <div className="space-y-1">
-                <Label htmlFor="address2" className="text-xs">Address Line 2</Label>
-                <Input id="address2" placeholder="Suite 100" />
+                <Label htmlFor="address2" className="text-xs">Adresse Zeile 2</Label>
+                <Input id="address2" placeholder="Top 3" />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <Label className="text-xs">Country</Label>
+                  <Label className="text-xs">Land</Label>
                   <Select>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select country" />
+                      <SelectValue placeholder="Land wählen" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="us">United States</SelectItem>
-                      <SelectItem value="de">Germany</SelectItem>
-                      <SelectItem value="at">Austria</SelectItem>
+                      <SelectItem value="at">Österreich</SelectItem>
+                      <SelectItem value="de">Deutschland</SelectItem>
+                      <SelectItem value="ch">Schweiz</SelectItem>
+                      <SelectItem value="us">USA</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs">City</Label>
-                  <Input placeholder="New York" />
+                  <Label className="text-xs">Stadt</Label>
+                  <Input placeholder="Wien" />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <Label className="text-xs">State / Province</Label>
-                  <Input placeholder="NY" />
+                  <Label className="text-xs">Bundesland</Label>
+                  <Input placeholder="Wien" />
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs">ZIP / Postal Code</Label>
-                  <Input placeholder="10001" />
+                  <Label className="text-xs">PLZ</Label>
+                  <Input placeholder="1010" />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <Label className="text-xs">Expense Tags</Label>
+                <Label className="text-xs">Ausgaben-Tags</Label>
                 <Select>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select tags" />
+                    <SelectValue placeholder="Tags wählen" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="marketing">Marketing</SelectItem>
-                    <SelectItem value="development">Development</SelectItem>
+                    <SelectItem value="development">Entwicklung</SelectItem>
                   </SelectContent>
                 </Select>
-                <p className="text-[10px] text-muted-foreground">Tags help categorize and track customer expenses.</p>
+                <p className="text-[10px] text-muted-foreground">Tags helfen bei der Kategorisierung von Ausgaben.</p>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="vat" className="text-xs">Tax ID / VAT Number</Label>
-                <Input id="vat" placeholder="Enter VAT number" />
+                <Label htmlFor="vat" className="text-xs">UID-Nummer / Steuernummer</Label>
+                <Input id="vat" placeholder="UID eingeben" />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="note" className="text-xs">Note</Label>
-                <Textarea id="note" placeholder="Additional information..." className="min-h-[100px]" />
+                <Label htmlFor="note" className="text-xs">Notiz</Label>
+                <Textarea id="note" placeholder="Zusätzliche Informationen..." className="min-h-[100px]" />
               </div>
 
             </div>
@@ -158,14 +159,14 @@ export function CreateCustomerSheet({ open, onOpenChange }: CreateCustomerSheetP
             variant="ghost"
             onClick={() => onOpenChange(false)}
           >
-            Cancel
+            Abbrechen
           </Button>
           <Button
             onClick={() => {
               onOpenChange(false);
             }}
           >
-            Create
+            Erstellen
           </Button>
         </SheetFooter>
 
