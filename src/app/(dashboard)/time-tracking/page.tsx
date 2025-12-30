@@ -137,7 +137,7 @@ export default function TimeTrackingPage() {
 
   return (
     <div className="flex-1 space-y-2 p-2 py-6 min-h-screen flex flex-col">
-      <div className="flex items-center space-y-2 gap-2">
+      <div className="flex items-center space-y-2 gap-2 mb-5">
         <SidebarTrigger className="m-0" />
         <h2 className="text-xl font-bold tracking-tight">Zeiterfassung</h2>
       </div>
@@ -161,7 +161,6 @@ export default function TimeTrackingPage() {
             </Button>
           </div>
 
-          {/* Calendar Grid */}
           <div className="flex-1 flex flex-col min-h-0">
             <div className="grid grid-cols-7 border-b bg-muted/5">
               {["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"].map((day) => (
