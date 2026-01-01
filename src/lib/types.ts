@@ -133,3 +133,27 @@ export interface InvoiceItem {
   amount: number;
   position: number;
 }
+
+export interface Transaction {
+  id?: number;
+  user_id?: string;
+  date: string;
+  description: string;
+  amount: number;
+  type: 'income' | 'expense';
+  category: string;
+  receipt_url?: string | null;
+  created_at?: string;
+}
+
+export interface FinancialRecord {
+  id: string | number;
+  source: 'manual' | 'invoice';
+  date: string;
+  description: string;
+  amount: number;
+  type: 'income' | 'expense';
+  category: string;
+  hasReceipt: boolean;
+  originalObject: Transaction | any;
+}
