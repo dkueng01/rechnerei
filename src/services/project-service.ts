@@ -7,7 +7,7 @@ export const ProjectService = {
     const pg = await getApiClient(user);
     const { data, error } = await pg
       .from("projects")
-      .select("*, customers(name)")
+      .select("*, customers:customers!fk_projects_customer(name)")
       .order("created_at", { ascending: false });
 
     if (error) throw error;

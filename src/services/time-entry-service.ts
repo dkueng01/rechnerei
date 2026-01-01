@@ -9,8 +9,11 @@ export const TimeEntryService = {
       .from("time_entries")
       .select(`
         *,
-        projects ( name, customers ( name ) ),
-        catalog_items ( name, price )
+        catalog_items ( name, price ),
+        projects (
+          name,
+          customers!fk_projects_customer ( name )
+        )
       `)
       .eq("user_id", user.id)
       .gte("start_time", startIso)
