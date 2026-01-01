@@ -1,5 +1,6 @@
 import { InvoiceData } from "@/components/invoice-template";
 import { getApiClient } from "@/lib/api-client";
+import { Invoice } from "@/lib/types";
 import { CurrentUser } from "@stackframe/stack";
 
 export const InvoiceService = {
@@ -98,5 +99,36 @@ export const InvoiceService = {
     }
 
     return newInvoiceId;
+  },
+
+  async getAll(user: CurrentUser) {
+    const client = await getApiClient(user);
+    const { data, error } = await client
+      .from("invoices")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+    return data as Invoice[];
+  },
+
+  async updateStatus(user: CurrentUser, id: number, status: string) {
+    const client = await getApiClient(user);
+    const { error } = await client
+      .from("invoices")
+      .update({ status })
+      .eq("id", id);
+
+    if (error) throw error;
+  },
+
+  async delete(user: CurrentUser, id: number) {
+    const client = await getApiClient(user);
+    const { error } = await client
+      .from("invoices")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
   }
 };

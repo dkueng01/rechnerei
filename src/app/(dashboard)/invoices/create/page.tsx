@@ -7,7 +7,6 @@ import { useReactToPrint } from "react-to-print";
 import { stackClientApp } from "@/stack/client";
 import { Loader2, ArrowLeft, Plus, Printer, Save, Trash, Settings2 } from "lucide-react";
 
-// UI Components
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,7 +14,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-// Custom Components & Types
 import { InvoiceTemplate, InvoiceData, InvoiceItem as TemplateItem } from "@/components/invoice-template";
 import { InvoiceService } from "@/services/invoice-service";
 import { CustomerService } from "@/services/customer-service";
@@ -25,7 +23,7 @@ import { InvoiceToolsSheet, ToolCatalogItem, ToolTimeEntry } from "@/components/
 
 
 const initialInvoiceState: InvoiceData = {
-  invoiceNumber: "", // Wird geladen
+  invoiceNumber: "",
   date: new Date().toISOString().split('T')[0],
   dueDate: "",
   performanceDate: "",
@@ -47,29 +45,25 @@ export default function CreateInvoicePage() {
   const user = stackClientApp.useUser();
   const router = useRouter();
 
-  // State
   const [isLoadingInit, setIsLoadingInit] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [invoiceData, setInvoiceData] = useState<InvoiceData>(initialInvoiceState);
 
-  // Sheet State
   const [isToolsOpen, setIsToolsOpen] = useState(false);
 
-  // Logic State
   const [selectedProjectId, setSelectedProjectId] = useState<string>("");
   const [selectedCustomerId, setSelectedCustomerId] = useState<string>("");
-  const [importedTimeIds, setImportedTimeIds] = useState<number[]>([]); // Track IDs for linking
+  const [importedTimeIds, setImportedTimeIds] = useState<number[]>([]);
 
   const printRef = useRef<HTMLDivElement>(null);
   const handlePrint = useReactToPrint({ contentRef: printRef, documentTitle: `Rechnung_${invoiceData.invoiceNumber}` });
 
-  // --- 1. BOOTSTRAP: Load Settings & Next Number ---
   useEffect(() => {
     async function init() {
       if (!user) return;
       try {
         const [settings, nextNum] = await Promise.all([
-          CompanySettingsService.get(user), // Annahme: Gibt CompanySettings zurück
+          CompanySettingsService.get(user),
           InvoiceService.getNextNumber(user)
         ]);
 
@@ -96,14 +90,9 @@ export default function CreateInvoicePage() {
     init();
   }, [user]);
 
-
-  // --- 2. HANDLERS ---
-
-  // Load Real Customer Data
   const loadCustomerIntoInvoice = async (custId: string) => {
     if (!user) return;
     try {
-      // Wenn der String eine Nummer ist, parsen
       const id = parseInt(custId);
       if (isNaN(id)) return;
 
@@ -150,7 +139,6 @@ export default function CreateInvoicePage() {
 
     setInvoiceData(prev => ({ ...prev, items: [...prev.items, ...newItems] }));
 
-    // IDs merken für späteren DB Update
     setImportedTimeIds(prev => [...prev, ...entries.map(e => e.id)]);
   };
 
@@ -180,7 +168,6 @@ export default function CreateInvoicePage() {
     setInvoiceData({ ...invoiceData, items: [...invoiceData.items, { description: "", quantity: 1, price: 0 }] });
   };
 
-  // --- 3. SAVE ACTION ---
   const handleSave = async () => {
     if (!user) return;
     if (!invoiceData.recipient.name) {
@@ -195,7 +182,7 @@ export default function CreateInvoicePage() {
         linkedTimeEntryIds: importedTimeIds
       });
 
-      router.push("/invoices"); // Zurück zur Liste
+      router.push("/invoices");
     } catch (e: any) {
       console.error(e);
     } finally {
@@ -210,7 +197,6 @@ export default function CreateInvoicePage() {
   return (
     <div className="flex flex-col h-[calc(100vh-2rem)] overflow-hidden bg-background">
 
-      {/* HEADER */}
       <div className="h-16 border-b flex items-center justify-between px-4 bg-background shrink-0">
         <div className="flex items-center gap-2 sm:gap-4">
           <Link href="/invoices">
@@ -245,11 +231,9 @@ export default function CreateInvoicePage() {
         </div>
       </div>
 
-      {/* CONTENT SCROLLABLE */}
       <div className="flex-1 overflow-y-auto p-4 bg-muted/5">
         <div className="max-w-4xl mx-auto space-y-4">
 
-          {/* KOPFDATEN */}
           <Card className="rounded-none">
             <CardHeader className="pb-3 border-b bg-muted/10">
               <CardTitle className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Kopfdaten</CardTitle>
@@ -293,7 +277,6 @@ export default function CreateInvoicePage() {
             </CardContent>
           </Card>
 
-          {/* EMPFÄNGER */}
           <Card className="rounded-none">
             <CardHeader className="pb-3 border-b bg-muted/10">
               <CardTitle className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Empfänger</CardTitle>
@@ -320,7 +303,6 @@ export default function CreateInvoicePage() {
             </CardContent>
           </Card>
 
-          {/* POSITIONEN */}
           <Card className="rounded-none overflow-hidden gap-0">
             <CardHeader className="pb-3 border-b bg-muted/10 flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Positionen</CardTitle>
@@ -399,7 +381,6 @@ export default function CreateInvoicePage() {
             </div>
           </Card>
 
-          {/* SUMMEN */}
           <div className="flex justify-end">
             <Card className="w-full sm:w-80 rounded-none">
               <CardContent className="space-y-3">
@@ -444,7 +425,6 @@ export default function CreateInvoicePage() {
         onImportTimeEntries={handleImportTimeEntries}
       />
 
-      {/* Hidden Print Area */}
       <div style={{ overflow: "hidden", height: 0, width: 0 }}>
         <div ref={printRef}>
           <InvoiceTemplate data={invoiceData} />
