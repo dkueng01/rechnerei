@@ -74,6 +74,7 @@ export interface TimeEntry {
   id?: number;
   user_id?: string;
   project_id?: number;
+  invoice_id?: number | null;
   catalog_item_id?: number | null;
   description?: string;
   start_time: string;
@@ -92,4 +93,43 @@ export interface TimeEntry {
     name: string;
     price: number;
   };
+}
+
+export interface Invoice {
+  id?: number;
+  user_id?: string;
+  customer_id?: number | null;
+  project_id?: number | null;
+
+  invoice_number: string;
+  status: 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled';
+
+  issue_date: string;
+  due_date?: string | null;
+  performance_date?: string;
+
+  recipient_name?: string;
+  recipient_address?: string;
+
+  subtotal: number;
+  tax_total: number;
+  total: number;
+  currency: string;
+
+  notes?: string;
+
+  created_at?: string;
+  updated_at?: string;
+
+  items?: InvoiceItem[];
+}
+
+export interface InvoiceItem {
+  id?: number;
+  invoice_id?: number;
+  description: string;
+  quantity: number;
+  unit_price: number;
+  amount: number;
+  position: number;
 }

@@ -14,6 +14,18 @@ export const CustomerService = {
     return data as Customer[];
   },
 
+  async getById(user: CurrentUser, id: number) {
+    const pg = await getApiClient(user);
+    const { data, error } = await pg
+      .from("customers")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) throw error;
+    return data as Customer;
+  },
+
   async create(user: CurrentUser, customer: Partial<Customer>) {
     const pg = await getApiClient(user);
 
